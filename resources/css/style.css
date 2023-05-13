@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Mulish&display=swap');
+
+body {
+    font-family: 'Mulish', sans-serif;
+}
+.top {
+    background-image: url('/public/img/pancake.png');
+    height:600px;
+}
+nav {
+    background-color: rgba(66, 63, 64, 0.75);
+}
+.search-bar {
+    height:100%;
+}
+
+.search-bar form input {
+    width:600px;
+}
+
+.intro-commun {
+    width:70%;
+    background-image: url('/public/img/Frame 69.png');
+}
+
+.btn svg {
+    display: inline;
+}
+
+.content {
+    padding-right:112px;
+    padding-left:112px;
+}
+
+.top-picks {
+    width:70%;
+}
+
+.intro-start {
+    width:70%;
+    background-image: url('/public/img/Frame 70.png');
+}
