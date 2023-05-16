@@ -7,10 +7,10 @@
 
 <footer class="bg-brown-400 text-white" aria-label="Site Footer">
     <div class="mx-auto max-w-screen-xl px-4 py-5 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-2">
+        <div class="grid sm:grid-cols-2 grid-cols-1">
             <img src="{{ asset('img/logo.png') }}" alt="">
             <div class="flex flex-col gap-y-5">
-                <p class="text-lg">
+                <p class="sm:text-lg text-sm">
                     This is a social community developed by local community.
                     please kindly reach us if you have any suggestion
                 </p>

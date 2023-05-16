@@ -1,4 +1,4 @@
-<nav class="opacity-80 fixed z-30 w-screen">
+<nav class="sticky top-0 z-30 w-full opacity-80">
     <header class="bg-brown-400" aria-label="Site Header">
         <div class="mx-auto flex h-16 max-w-screen-xl items-center justify-between gap-8 px-4 sm:px-6 lg:px-8">
             <a class="min-w-20 block text-teal-600" href="/">
@@ -24,7 +24,7 @@
                         </a>
 
                         <a class="rounded-md bg-my-white px-5 py-2.5 text-sm font-medium text-orange transition hover:bg-my-white/75 hover:text-orange/75 sm:block"
-                           href="/">
+                           href="{{ route('register') }}">
                             Register
                         </a>
                     </div>
@@ -36,9 +36,8 @@
                                     x-on:click="isActive = !isActive">
                                 <span class="sr-only">Menu</span>
                                 <svg class="icon icon-tabler icon-tabler-menu" xmlns="http://www.w3.org/2000/svg"
-                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                                     stroke="orange" fill="none" stroke-linecap="round"
-                                     stroke-linejoin="round">
+                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="orange"
+                                     fill="none" stroke-linecap="round" stroke-linejoin="round">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                     <path d="M4 8l16 0"></path>
                                     <path d="M4 16l16 0"></path>

@@ -18,7 +18,7 @@
 </head>
 
 <body class="antialiased">
-    <div class="min-h-screen bg-gray-100">
+    <div class="min-h-screen bg-orange flex flex-col">
         @include('layouts.navigation')
         <!-- Page Content -->
         <main>
