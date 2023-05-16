@@ -1,22 +1,22 @@
 @extends('layouts.app')
 @section('main')
-    <div class="min-w-screen bg-orange">
+    <div class="min-w-screen bg-[url('../../public/img/pancake.png')] bg-cover bg-no-repeat ">
         <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
-            <div class="mx-auto max-w-lg">
+            <div class="mx-auto max-w-xl bg-orange pt-8 rounded-lg">
                 @if ($errors->any())
                     <div class="p-4 sm:p-6 lg:p-8">
                         <div class="border-s-4 rounded-lg border-red-500 bg-red-50 p-4" role="alert">
                             <div class="flex flex-col items-center gap-2 gap-y-4 text-red-800">
                                 @foreach ($errors->all() as $error)
                                     <div class="flex">
-                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                        <svg class="min-h-5 min-w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                              fill="currentColor">
                                             <path fill-rule="evenodd"
                                                   d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z"
                                                   clip-rule="evenodd" />
                                         </svg>
 
-                                        <strong class="block font-medium"> {{ $error }} </strong>
+                                        <strong class="block flex-1 font-medium"> {{ $error }} </strong>
                                     </div>
                                 @endforeach
                             </div>
@@ -47,7 +47,7 @@
                 <form class="mb-0 space-y-4 rounded-lg p-4 sm:p-6 lg:p-8" action="{{ route('register.handle') }}"
                       method="POST">
                     @csrf
-                    <div class="flex gap-x-4">
+                    <div class="flex gap-x-4 justify-between sm:flex-row flex-col gap-y-4">
                         <div>
                             <label class="text-white" for="first-name">First Name</label>
 
@@ -107,7 +107,7 @@
 
                     <p class="text-center text-sm text-white">
                         Already a member?
-                        <a class="underline" href="{{ route('login') }}">Log in</a>
+                        <a class="underline hover:text-brown-400 transition-all duration-300" href="{{ route('login') }}">Log in</a>
                     </p>
                 </form>
             </div>

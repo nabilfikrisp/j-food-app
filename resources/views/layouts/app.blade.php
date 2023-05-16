@@ -21,7 +21,7 @@
     <div class="min-h-screen bg-orange flex flex-col">
         @include('layouts.navigation')
         <!-- Page Content -->
-        <main>
+        <main class="flex-1">
             @yield('main')
         </main>
         @include('layouts.footer')

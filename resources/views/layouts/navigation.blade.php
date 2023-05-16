@@ -1,4 +1,4 @@
-<nav class="sticky top-0 z-30 w-full opacity-80">
+<nav class="sticky top-0 z-30 w-full opacity-90">
     <header class="bg-brown-400" aria-label="Site Header">
         <div class="mx-auto flex h-16 max-w-screen-xl items-center justify-between gap-8 px-4 sm:px-6 lg:px-8">
             <a class="min-w-20 block text-teal-600" href="/">
@@ -12,21 +12,32 @@
                         <nav class="md:block" aria-label="Site Nav">
                             <ul class="flex items-center gap-6 text-sm">
                                 <li>
-                                    <a class="text-orange transition hover:text-orange/75" href="/">
+                                    <a class="text-orange transition duration-300 hover:text-orange/75" href="/">
                                         Community
                                     </a>
                                 </li>
                             </ul>
                         </nav>
-                        <a class="block rounded-md bg-orange px-5 py-2.5 text-sm font-medium text-white transition hover:bg-orange/75"
-                           href="/">
-                            Login
-                        </a>
+                        @auth
+                            <form action="{{ route('logout') }}" method="post">
+                                @csrf
+                                <button class="block rounded-md bg-orange px-5 py-2.5 text-sm font-medium text-white transition duration-300 hover:bg-orange/75"
+                                        type="submit">
+                                    Logout
+                                </button>
+                            </form>
+                        @else
+                            <a class="block rounded-md bg-orange px-5 py-2.5 text-sm font-medium text-white transition duration-300 hover:bg-orange/75"
+                               href="{{ route('login') }}">
+                                Login
+                            </a>
 
-                        <a class="rounded-md bg-my-white px-5 py-2.5 text-sm font-medium text-orange transition hover:bg-my-white/75 hover:text-orange/75 sm:block"
-                           href="{{ route('register') }}">
-                            Register
-                        </a>
+                            <a class="rounded-md bg-my-white px-5 py-2.5 text-sm font-medium text-orange transition duration-300 hover:bg-my-white/75 hover:text-orange/75 sm:block"
+                               href="{{ route('register') }}">
+                                Register
+                            </a>
+                        @endauth
+
                     </div>
 
                     <div class="relative block rounded bg-gray-100 text-gray-600 transition hover:text-gray-600/75 sm:hidden"
