@@ -24,6 +24,8 @@ return new class extends Migration
             $table->string('social_media');
             $table->float('rating');
             $table->integer('price_start');
+            $table->string('open_hours')->default('senin - sabtu (08:00 - 20:00)');
+            $table->boolean('non_tunai')->default(false);
             $table->timestamps();
         });
     }

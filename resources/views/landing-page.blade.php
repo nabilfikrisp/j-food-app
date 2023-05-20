@@ -1,29 +1,7 @@
 @extends('layouts.app')
 @section('link')
     <link href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" rel="stylesheet" />
-    <style>
-        .swiper {
-            width: 100%;
-            height: 100%;
-        }
-
-        .swiper-slide {
-            text-align: center;
-            font-size: 18px;
-            background: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .swiper-slide img {
-            display: block;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-    </style>
-
+    @vite(['resources/css/swiper.css'])
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
 @endsection
 @section('main')
@@ -80,7 +58,7 @@
                 <h2 class="text-2xl font-semibold text-white sm:text-3xl">Top Picks</h2>
                 <div class="swiper h-56">
                     <!-- Additional required wrapper -->
-                    <div class="swiper-wrapper h-full">
+                    <div class="swiper-wrapper flex h-full items-center justify-center overflow-hidden rounded-lg">
                         <!-- Slides -->
                         <div class="swiper-slide h-full overflow-hidden rounded-lg"><img src="{{ asset('img/c1.jpg') }}"
                                  alt=""></div>
@@ -120,36 +98,58 @@
             <div class="flex h-full w-full flex-col gap-y-5 rounded-lg p-5 text-white">
                 <h2 class="text-center text-2xl font-bold sm:text-3xl">Fresh From the Oven</h2>
                 <div class="grid w-full grid-cols-1 gap-4 sm:grid-cols-3" id="cards">
-                    @for ($i = 0; $i < 3; $i++)
-                        <div class="card mx-auto w-full overflow-hidden rounded-lg text-white shadow-lg sm:max-w-sm">
-                            <img class="w-full" src="{{ asset('img/Rectangle10.png') }}" alt="Sunset in the mountains">
-                            <div class="bg-brown-200">
-                                <div class="px-6 pt-4">
-                                    <div class="mb-2 text-xl font-bold">KFC</div>
-                                    <p class="text-base font-semibold">
-                                        <span>"</span>
-                                        Rajanya ayam Goreng
-                                        <span>"</span>
-                                    </p>
-                                </div>
-                                <div class="flex items-center gap-x-2 px-6 pt-4 pb-4">
-                                    <svg class="icon icon-tabler icon-tabler-map-pin" xmlns="http://www.w3.org/2000/svg"
-                                         width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                                         stroke="currentColor" fill="none" stroke-linecap="round"
-                                         stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"></path>
-                                        <path
-                                              d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z">
-                                        </path>
-                                    </svg>
-                                    Jatos
+                    @foreach ($restaurants as $restaurant)
+                        <a class="block rounded-lg bg-brown-100 p-4 text-my-white shadow-sm shadow-brown-200 transition-all hover:-translate-y-2"
+                           href="{{ route('restaurant.show', $restaurant['id']) }}">
+                            <img class="aspect-[15/16] w-full rounded-md object-cover"
+                                 src="{{ asset('img/' . $restaurant['image'] . '.png') }}"
+                                 alt="{{ $restaurant['name'] }}" />
+                            <div class="mt-2">
+                                <dl>
+                                    <div>
+                                        <dt class="sr-only">Name</dt>
+
+                                        <dd class="text-xl font-semibold">{{ $restaurant['name'] }}</dd>
+                                    </div>
+                                    <div>
+                                        <dt class="sr-only">Address</dt>
+
+                                        <dd class="text-xs">{{ $restaurant['address'] }}, {{ $restaurant['city'] }}</dd>
+                                    </div>
+                                </dl>
+
+                                <div class="mt-6 grid grid-cols-2 gap-8 text-xs">
+                                    <div class="sm:inline-flex sm:shrink-0 sm:items-center sm:gap-2">
+                                        <div class="mt-1.5 sm:mt-0">
+                                            <p class="font-semibold text-my-white">Price Start From</p>
+
+                                            <p class="font-medium">Rp. {{ $restaurant['price_start'] }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="sm:inline-flex sm:shrink-0 sm:items-center sm:gap-2">
+
+                                        <div class="mt-1.5 sm:mt-0">
+                                            <p class="font-semibold text-my-white">Rating</p>
+
+                                            <p class="flex gap-x-1 font-medium">
+                                                <span class="flex items-center">
+                                                    <svg class="icon icon-tabler icon-tabler-star-filled"
+                                                         xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                                         viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                         fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                        <path d="M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z"
+                                                              stroke-width="0" fill="currentColor"></path>
+                                                    </svg>
+                                                </span>
+                                                {{ $restaurant['rating'] }}
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-
-                        </div>
-                    @endfor
-
+                        </a>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -157,35 +157,5 @@
 @endsection
 
 @section('script')
-    <script>
-        var swiper = new Swiper(".swiper", {
-            slidesPerView: 3,
-            spaceBetween: 1,
-            pagination: {
-                el: ".swiper-pagination",
-                clickable: true,
-            },
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-            breakpoints: {
-                // when window width is >= 320px
-                320: {
-                    slidesPerView: 1,
-                    spaceBetween: 2
-                },
-                // when window width is >= 480px
-                640: {
-                    slidesPerView: 2,
-                    spaceBetween: 10
-                },
-                // when window width is >= 640px
-                820: {
-                    slidesPerView: 3,
-                    spaceBetween: 10
-                }
-            },
-        });
-    </script>
+    @vite(['resources/js/swiperInit.js'])
 @endsection

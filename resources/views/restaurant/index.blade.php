@@ -1,9 +1,4 @@
 @extends('layouts.app')
-@section('link')
-    <style>
-
-    </style>
-@endsection
 @section('main')
     <div class="page-container flex w-full flex-col gap-y-10 px-20 py-10">
         <section class="relative flex flex-col justify-center sm:flex-row" id="restaurant-index__navigation">
@@ -143,5 +138,5 @@
 @endsection
 
 @section('script')
-    <script src="{{ asset('js/filter.js') }}"></script>
+    @vite(['resources/js/filter.js'])
 @endsection
