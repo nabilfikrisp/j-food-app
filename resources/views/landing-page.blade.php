@@ -60,7 +60,7 @@
     <section class="w-full bg-orange px-5 py-10">
         <div class="mx-auto flex flex-col gap-y-10 sm:max-w-4xl">
             <div
-                 class="flex h-full w-full flex-col gap-y-5 rounded-lg bg-[url('../../public/img/Frame-69.png')] bg-cover bg-center bg-no-repeat p-5 text-white">
+                 class="flex h-full w-full flex-col gap-y-5 rounded-lg bg-[url('../../public/img/Frame69.png')] bg-cover bg-center bg-no-repeat p-5 text-white">
                 <h2 class="text-2xl font-semibold sm:text-3xl">Introduce our feature community</h2>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur architecto quam ipsum enim accusantium.
                     Iusto nihil illum quia perspiciatis omnis?</p>
@@ -102,12 +102,12 @@
                 </div>
             </div>
             <div
-                 class="flex h-full w-full flex-col gap-y-5 rounded-lg bg-[url('../../public/img/Frame-69.png')] bg-cover bg-center bg-no-repeat p-5 text-white">
+                 class="flex h-full w-full flex-col gap-y-5 rounded-lg bg-[url('../../public/img/Frame69.png')] bg-cover bg-center bg-no-repeat p-5 text-white">
                 <h2 class="text-2xl font-semibold sm:text-3xl">Start your journey with JFOOD</h2>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur architecto quam ipsum enim accusantium.
                     Iusto nihil illum quia perspiciatis omnis?</p>
                 <a class="flex w-fit items-center gap-x-2 divide-x-2 rounded-md bg-orange px-2 py-1 text-center text-white hover:bg-orange/80"
-                   href="">
+                   href="{{ route('restaurant.index') }}">
                     <p>Start Now</p>
                     <svg class="icon icon-tabler icon-tabler-chevron-right" xmlns="http://www.w3.org/2000/svg"
                          width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -121,7 +121,7 @@
                 <h2 class="text-center text-2xl font-bold sm:text-3xl">Fresh From the Oven</h2>
                 <div class="grid w-full grid-cols-1 gap-4 sm:grid-cols-3" id="cards">
                     @for ($i = 0; $i < 3; $i++)
-                        <div class="card w-full sm:max-w-sm overflow-hidden rounded-lg text-white shadow-lg mx-auto">
+                        <div class="card mx-auto w-full overflow-hidden rounded-lg text-white shadow-lg sm:max-w-sm">
                             <img class="w-full" src="{{ asset('img/Rectangle10.png') }}" alt="Sunset in the mountains">
                             <div class="bg-brown-200">
                                 <div class="px-6 pt-4">

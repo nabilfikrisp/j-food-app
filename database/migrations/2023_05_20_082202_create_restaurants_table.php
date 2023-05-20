@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('restaurants', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('image');
             $table->string('address');
             $table->string('city');
             $table->string('type');

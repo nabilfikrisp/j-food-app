@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('restaurant_id');
             $table->string('url');
+            $table->string('type')->nullable();
             $table->timestamps();
         });
     }

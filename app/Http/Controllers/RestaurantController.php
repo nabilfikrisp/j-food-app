@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Restaurant;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreRestaurantRequest;
 use App\Http\Requests\UpdateRestaurantRequest;
+
 
 class RestaurantController extends Controller
 {
@@ -15,7 +18,8 @@ class RestaurantController extends Controller
      */
     public function index()
     {
-        //
+        $restaurant = Restaurant::all();
+        return view('restaurant.index', ['restaurants' => $restaurant]);
     }
 
     /**
@@ -34,7 +38,7 @@ class RestaurantController extends Controller
      * @param  \App\Http\Requests\StoreRestaurantRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreRestaurantRequest $request)
+    public function store(Request $request)
     {
         //
     }
@@ -47,7 +51,7 @@ class RestaurantController extends Controller
      */
     public function show(Restaurant $restaurant)
     {
-        //
+        dd($restaurant);
     }
 
     /**
@@ -68,7 +72,7 @@ class RestaurantController extends Controller
      * @param  \App\Models\Restaurant  $restaurant
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateRestaurantRequest $request, Restaurant $restaurant)
+    public function update(Request $request, Restaurant $restaurant)
     {
         //
     }
@@ -82,5 +86,9 @@ class RestaurantController extends Controller
     public function destroy(Restaurant $restaurant)
     {
         //
+    }
+    public function search(Request $request)
+    {
+        dd($request['search']);
     }
 }

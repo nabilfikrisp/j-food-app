@@ -12,6 +12,12 @@
                         <nav class="md:block" aria-label="Site Nav">
                             <ul class="flex items-center gap-6 text-sm">
                                 <li>
+                                    <a class="text-orange transition duration-300 hover:text-orange/75"
+                                       href="{{ route('restaurant.index') }}">
+                                        Trending
+                                    </a>
+                                </li>
+                                <li>
                                     <a class="text-orange transition duration-300 hover:text-orange/75" href="/">
                                         Community
                                     </a>
@@ -60,6 +66,10 @@
                              role="menu" x-cloak x-transition x-show="isActive" x-on:click.away="isActive = false"
                              x-on:keydown.escape.window="isActive = false">
                             <div class="p-2">
+                                <a class="block rounded-lg px-4 py-2 text-sm text-orange hover:bg-brown-300"
+                                   href="{{ route('restaurant.index') }}" role="menuitem">
+                                    Trending
+                                </a>
                                 <a class="block rounded-lg px-4 py-2 text-sm text-orange hover:bg-brown-300"
                                    href="#" role="menuitem">
                                     Community
