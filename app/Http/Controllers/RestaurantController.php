@@ -18,7 +18,7 @@ class RestaurantController extends Controller
      */
     public function index()
     {
-        $restaurant = Restaurant::all();
+        $restaurant = Restaurant::paginate(12);
         return view('restaurant.index', ['restaurants' => $restaurant]);
     }
 
@@ -51,7 +51,7 @@ class RestaurantController extends Controller
      */
     public function show(Restaurant $restaurant)
     {
-        dd($restaurant);
+        return view('restaurant.show', ['restaurant' => $restaurant]);
     }
 
     /**
@@ -89,6 +89,6 @@ class RestaurantController extends Controller
     }
     public function search(Request $request)
     {
-        dd($request['search']);
+        dd($request);
     }
 }

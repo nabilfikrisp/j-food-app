@@ -21,7 +21,7 @@
                            name="search" type="text" placeholder="Search..." />
 
                     <div class="end-0 absolute inset-y-0 flex items-center justify-center" id="search-navigation">
-                        <div class="absolute top-12 hidden w-72 flex-col gap-10 rounded-lg bg-slate-300/70 p-4"
+                        <div class="absolute top-12 z-10 hidden w-72 flex-col gap-10 rounded-lg bg-slate-300/70 p-4"
                              id="filter-content">
                             <div class="mb-4 flex flex-row justify-between gap-x-4">
                                 <span class="w-1/2 text-sm">Rating</span>
@@ -42,7 +42,7 @@
                                     <label for="star-e"></label>
                                 </div>
                             </div>
-                            <div class="flex flex-row gap-x-4">
+                            <div class="mb-4 flex flex-row gap-x-4">
                                 <span class="w-1/2 text-sm">Start Price</span>
                                 <div class="flex justify-between gap-4">
                                     <label class="flex items-center gap-2" for="FilterPriceTo">
@@ -53,6 +53,60 @@
                                     </label>
                                 </div>
                             </div>
+                            <div class="mb-4 flex flex-row gap-x-4">
+                                <span class="w-1/2 text-sm">Sort Rating</span>
+                                <div class="flex justify-between gap-4">
+                                    <fieldset class="flex flex-row gap-3">
+
+                                        <div>
+                                            <input class="peer hidden" id="rating-descending" name="rating_sort"
+                                                   type="radio" value="descending" />
+
+                                            <label class="flex cursor-pointer items-center justify-center rounded-md border border-gray-100 bg-white px-3 py-2 text-gray-900 hover:border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-500 peer-checked:text-white"
+                                                   for="rating-descending">
+                                                <p class="text-sm font-medium">Highest</p>
+                                            </label>
+                                        </div>
+
+                                        <div>
+                                            <input class="peer hidden" id="rating-ascending" name="rating_sort"
+                                                   type="radio" value="ascending" />
+
+                                            <label class="flex cursor-pointer items-center justify-center rounded-md border border-gray-100 bg-white px-3 py-2 text-gray-900 hover:border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-500 peer-checked:text-white"
+                                                   for="rating-ascending">
+                                                <p class="text-sm font-medium">Lowest</p>
+                                            </label>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                            <div class="mb-4 flex flex-row gap-x-4">
+                                <span class="w-1/2 text-sm">Sort Price</span>
+                                <div class="flex justify-between gap-4">
+                                    <fieldset class="flex flex-row gap-3">
+
+                                        <div>
+                                            <input class="peer hidden" id="price-descending" name="price_sort"
+                                                   type="radio" value="descending" />
+
+                                            <label class="flex cursor-pointer items-center justify-center rounded-md border border-gray-100 bg-white px-3 py-2 text-gray-900 hover:border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-500 peer-checked:text-white"
+                                                   for="price-descending">
+                                                <p class="text-sm font-medium">Highest</p>
+                                            </label>
+                                        </div>
+
+                                        <div>
+                                            <input class="peer hidden" id="price-ascending" name="price_sort"
+                                                   type="radio" value="ascending" />
+
+                                            <label class="flex cursor-pointer items-center justify-center rounded-md border border-gray-100 bg-white px-3 py-2 text-gray-900 hover:border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-500 peer-checked:text-white"
+                                                   for="price-ascending">
+                                                <p class="text-sm font-medium">Lowest</p>
+                                            </label>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
                             {{-- <div class="flex flex-row gap-x-4">
                                 <span>rating</span>
                                 <input type="text">
@@ -61,8 +115,8 @@
                         <button class="inset-y-0 rounded-r-lg p-2 text-gray-600" id="filter-button" type="button">
                             <span class="sr-only">Filter</span>
                             <svg class="icon icon-tabler icon-tabler-filter" xmlns="http://www.w3.org/2000/svg"
-                                 width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                 fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                 width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                 stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                 <path
                                       d="M4 4h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v7l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227z">
@@ -71,7 +125,8 @@
                         </button>
                         <button class="inset-y-0 rounded-r-lg p-2 text-gray-600" type="submit">
                             <span class="sr-only">Submit Search</span>
-                            <svg class="h-5 w-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <svg class="h-5 w-5" fill="currentColor" viewbox="0 0 20 20"
+                                 xmlns="http://www.w3.org/2000/svg">
                                 <path clip-rule="evenodd"
                                       d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
                                       fill-rule="evenodd"></path>
@@ -134,6 +189,7 @@
                 </a>
             @endforeach
         </section>
+        {{ $restaurants->links() }}
     </div>
 @endsection
 

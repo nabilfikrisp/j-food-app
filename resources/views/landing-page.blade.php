@@ -58,7 +58,7 @@
                 <h2 class="text-2xl font-semibold text-white sm:text-3xl">Top Picks</h2>
                 <div class="swiper h-56">
                     <!-- Additional required wrapper -->
-                    <div class="swiper-wrapper flex h-full items-center justify-center overflow-hidden rounded-lg">
+                    <div class="swiper-wrapper flex h-full items-center justify-center rounded-lg">
                         <!-- Slides -->
                         <div class="swiper-slide h-full overflow-hidden rounded-lg"><img src="{{ asset('img/c1.jpg') }}"
                                  alt=""></div>
