@@ -89,6 +89,48 @@ class RestaurantController extends Controller
     }
     public function search(Request $request)
     {
-        dd($request);
+        // Retrieve the search query and filters from the request
+        $searchQuery = $request->input('search');
+        $ratingFilter = $request->input('rating');
+        $startPriceFilter = $request->input('start_price');
+        $ratingSort = $request->input('rating_sort');
+        $priceSort = $request->input('price_sort');
+
+        // Build the query builder instance
+        $query = Restaurant::query();
+
+        // Apply filters if provided
+        if (!empty($searchQuery)) {
+            $query->where('name', 'like', "%{$searchQuery}%");
+        }
+
+        if (!empty($ratingFilter)) {
+            $query->where('rating', '>=', $ratingFilter);
+        }
+
+        if (!empty($startPriceFilter)) {
+            $query->where('price_start', '>=', $startPriceFilter);
+        }
+
+        // Apply sorting
+        if ($ratingSort === 'asc') {
+            $query->orderBy('rating', 'asc');
+        } elseif ($ratingSort === 'desc') {
+            $query->orderBy('rating', 'desc');
+        }
+
+        if ($priceSort === 'asc') {
+            $query->orderBy('price_start', 'asc');
+        } elseif ($priceSort === 'desc') {
+            $query->orderBy('price_start', 'desc');
+        }
+
+        // Perform the search query
+        $restaurants = $query->orderByRaw("CASE WHEN rating = 0 THEN 1 ELSE 0 END, rating {$ratingSort}, price_start {$priceSort}")
+            ->paginate(12);
+
+        // Return the search results to the view
+
+        return view('restaurant.index', ['restaurants' => $restaurants]);
     }
 }

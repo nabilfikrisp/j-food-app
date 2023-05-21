@@ -30,6 +30,6 @@ class TestController extends Controller
 
         $discussion_thread = Discussion_Thread::find(1);
         
-        dd(Comment::whereBelongsTo($discussion_thread)->get());
+        dd($restaurant);
     }
 }
