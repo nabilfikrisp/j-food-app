@@ -3,10 +3,15 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Posts;
+use App\Models\Reviews;
+use App\Models\Discussion_Thread;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -29,6 +34,8 @@ class User extends Authenticatable
         'id'
     ];
 
+    protected $appends = ['reviews', 'discussion_threads'];
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -47,4 +54,29 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Reviews::class);
+    }
+
+    public function posts(): HasMany
+    {
+        return $this->hasMany(Posts::class);
+    }
+
+    public function discussion_threads(): HasMany
+    {
+        return $this->hasMany(Discussion_Thread::class);
+    }
+
+    public function getReviewsAttribute()
+    {
+        return Reviews::whereBelongsTo($this)->get();
+    }
+
+    public function getDiscussionThreadsAttribute()
+    {
+        return Discussion_Thread::whereBelongsTo($this)->get();
+    }
 }

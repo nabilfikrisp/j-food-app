@@ -1,10 +1,11 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\TestController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RestaurantController;
-use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,8 +47,6 @@ Route::middleware('auth')->group(function () {
 //     return view('landingPage');
 // });
 
-Route::get('/test', function () {
-    return view('test');
-});
+Route::get('/test', [TestController::class, 'test']);
 
 // require __DIR__ . '/auth.php';

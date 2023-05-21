@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Review_Images extends Model
 {
@@ -12,4 +13,9 @@ class Review_Images extends Model
     protected $guarded = [
         'id'
     ];
+
+    public function review(): BelongsTo
+    {
+        return $this->belongsTo(Reviews::class);
+    }
 }

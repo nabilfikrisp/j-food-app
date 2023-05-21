@@ -21,5 +21,19 @@ class ReviewsSeeder extends Seeder
             'rating' => 4,
             'comment' => 'Cukup murah',
         ]);
+
+        DB::table('reviews')->insert([
+            'user_id' => 1,
+            'restaurant_id' => 2,
+            'rating' => 4,
+            'comment' => 'Cukup murah enak',
+        ]);
+
+        DB::table('reviews')->insert([
+            'user_id' => 1,
+            'restaurant_id' => 1,
+            'rating' => 4,
+            'comment' => 'Cukup murah so so',
+        ]);
     }
 }
