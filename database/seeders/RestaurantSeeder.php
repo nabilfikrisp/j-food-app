@@ -24,7 +24,7 @@ class RestaurantSeeder extends Seeder
             'phone_number' => '+62' . '8123456789',
             'social_media' => "@" . "makanmudah",
             'rating' => "4.5",
-            'price_start' => 30000,
+            'price_start' => 10000,
         ]);
 
         DB::table('restaurants')->insert([
@@ -47,7 +47,7 @@ class RestaurantSeeder extends Seeder
             'type' => 'Ayam',
             'phone_number' => '+62' . '8123456789',
             'social_media' => "@" . "crisbar",
-            'rating' => "4.1",
+            'rating' => "5.0",
             'price_start' => 10000,
         ]);
 
@@ -59,8 +59,8 @@ class RestaurantSeeder extends Seeder
             'type' => 'Ayam',
             'phone_number' => '+62' . '8123456789',
             'social_media' => "@" . "spg",
-            'rating' => "4.1",
-            'price_start' => 10000,
+            'rating' => "5.0",
+            'price_start' => 50000,
         ]);
 
         DB::table('restaurants')->insert([
@@ -108,7 +108,7 @@ class RestaurantSeeder extends Seeder
                 'type' => 'Ayam',
                 'phone_number' => '+62' . '8123456789',
                 'social_media' => "@" . "crisbar",
-                'rating' => "4.1",
+                'rating' => "3.1",
                 'price_start' => 10000,
             ]);
 

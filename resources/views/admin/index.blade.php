@@ -1,14 +1,4 @@
-@extends('layouts.app')
-@section('main')
-    <div class="flex h-screen">
-        <!-- Sidebar -->
-        <aside class="w-64 bg-brown-400 text-my-white">
-            <!-- Sidebar Content -->
-        </aside>
-
-        <!-- Main Content -->
-        <main class="flex-1 bg-my-white">
-            <!-- Page Content -->
-        </main>
-    </div>
+@extends('admin.layouts.admin-app')
+@section('admin-main')
+    <div class="w-full h-full flex items-center justify-center opacity-30 text-2xl font-semibold">Welcome to Admin Dashboard</div>
 @endsection

@@ -4,8 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RestaurantController;
+use App\Models\Restaurant;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +34,13 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('restaurant', RestaurantController::class);
     Route::get('/search', [RestaurantController::class, 'search'])->name('restaurant.search');
+
+    Route::middleware('IsAdmin')->prefix('admin')->group(function () {
+        Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+        Route::get('/restaurant', [RestaurantController::class, 'index'])->name('admin.restaurant.index');
+        Route::get('/restaurant/create', [RestaurantController::class, 'create'])->name('admin.restaurant.create');
+        Route::get('/restaurant/store', [RestaurantController::class, 'store'])->name('admin.restaurant.store');
+    });
 });
 // Route::get('/dashboard', function () {
 //     return view('dashboard');

@@ -19,6 +19,10 @@ class RestaurantController extends Controller
     public function index()
     {
         $restaurant = Restaurant::paginate(12);
+        if (auth()->user()->role == 'A') {
+            $restaurant = Restaurant::paginate(50);
+            return view('admin.restaurant.index', ['restaurants' => $restaurant]);
+        }
         return view('restaurant.index', ['restaurants' => $restaurant]);
     }
 
@@ -29,7 +33,7 @@ class RestaurantController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.restaurant.create');
     }
 
     /**
@@ -40,7 +44,7 @@ class RestaurantController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd(request());
     }
 
     /**
@@ -89,17 +93,14 @@ class RestaurantController extends Controller
     }
     public function search(Request $request)
     {
-        // Retrieve the search query and filters from the request
         $searchQuery = $request->input('search');
         $ratingFilter = $request->input('rating');
         $startPriceFilter = $request->input('start_price');
         $ratingSort = $request->input('rating_sort');
         $priceSort = $request->input('price_sort');
 
-        // Build the query builder instance
         $query = Restaurant::query();
 
-        // Apply filters if provided
         if (!empty($searchQuery)) {
             $query->where('name', 'like', "%{$searchQuery}%");
         }
@@ -112,7 +113,6 @@ class RestaurantController extends Controller
             $query->where('price_start', '>=', $startPriceFilter);
         }
 
-        // Apply sorting
         if ($ratingSort === 'asc') {
             $query->orderBy('rating', 'asc');
         } elseif ($ratingSort === 'desc') {
@@ -125,11 +125,8 @@ class RestaurantController extends Controller
             $query->orderBy('price_start', 'desc');
         }
 
-        // Perform the search query
         $restaurants = $query->orderByRaw("CASE WHEN rating = 0 THEN 1 ELSE 0 END, rating {$ratingSort}, price_start {$priceSort}")
             ->paginate(12);
-
-        // Return the search results to the view
 
         return view('restaurant.index', ['restaurants' => $restaurants]);
     }

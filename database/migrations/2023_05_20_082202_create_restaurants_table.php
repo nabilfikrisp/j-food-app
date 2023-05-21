@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('type');
             $table->string('phone_number');
             $table->string('social_media');
-            $table->float('rating');
+            $table->float('rating')->nullable();
             $table->integer('price_start');
             $table->string('open_hours')->default('senin - sabtu (08:00 - 20:00)');
             $table->boolean('non_tunai')->default(false);
