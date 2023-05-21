@@ -23,6 +23,6 @@ class Posts extends Model
 
     public function discussion_threads(): BelongsTo
     {
-        return $this->belongsTo(Discussion_Thread::class);
+        return $this->belongsTo(Discussion_Thread::class, 'thread_id');
     }
 }

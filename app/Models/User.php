@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Posts;
+use App\Models\Review;
 use App\Models\Reviews;
 use App\Models\Discussion_Thread;
 use Laravel\Sanctum\HasApiTokens;
@@ -57,7 +58,7 @@ class User extends Authenticatable
 
     public function reviews(): HasMany
     {
-        return $this->hasMany(Reviews::class);
+        return $this->hasMany(Review::class);
     }
 
     public function posts(): HasMany
@@ -72,7 +73,7 @@ class User extends Authenticatable
 
     public function getReviewsAttribute()
     {
-        return Reviews::whereBelongsTo($this)->get();
+        return Review::whereBelongsTo($this)->get();
     }
 
     public function getDiscussionThreadsAttribute()

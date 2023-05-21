@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use Database\Seeders\UserSeeder;
 use Database\Seeders\PostsSeeder;
+use Database\Seeders\ReviewSeeder;
 use Database\Seeders\ReviewsSeeder;
 use Database\Seeders\RestaurantSeeder;
 use Database\Seeders\ReviewImagesSeeder;
@@ -28,7 +29,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             RestaurantSeeder::class,
             RestaurantImageSeeder::class,
-            ReviewsSeeder::class,
+            ReviewSeeder::class,
             ReviewImagesSeeder::class,
             PostsSeeder::class,
             DiscussionThreadSeeder::class,
