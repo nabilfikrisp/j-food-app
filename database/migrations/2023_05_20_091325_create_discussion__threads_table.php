@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('discussion__threads', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
-            $table->foreignId('category_id');
+            $table->foreignId('forum_category_id');
             $table->string('title');
             $table->string('body');
             $table->timestamps();

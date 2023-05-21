@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-class DiscussionThreadSeeder extends Seeder
+class CommentSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,10 +15,9 @@ class DiscussionThreadSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('discussion__threads')->insert([
+        DB::table('comments')->insert([
             'user_id' => 1,
-            'forum_category_id' => 1,
-            'title' => 'Restoran A di jalan cinta',
+            'discussion_thread_id' => 1,
             'body' => 'Kalian harus banget coba restoran A di jalan cinta!!!'
         ]);
     }
