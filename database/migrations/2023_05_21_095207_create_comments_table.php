@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id');
             $table->foreignId('discussion_thread_id');
-            $table->string('body');
+            $table->text('body');
             $table->timestamps();
         });
     }

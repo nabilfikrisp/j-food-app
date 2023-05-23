@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('user_id');
             $table->foreignId('restaurant_id');
             $table->integer("rating");
-            $table->string("comment");
+            $table->text("comment");
             $table->timestamps();
         });
     }

@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id');
             $table->foreignId('forum_category_id');
-            $table->string('title');
-            $table->string('body');
+            $table->text('title');
+            $table->text('body');
             $table->timestamps();
         });
     }
