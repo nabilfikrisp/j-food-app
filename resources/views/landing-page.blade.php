@@ -58,7 +58,7 @@
                 <h2 class="text-2xl font-semibold text-white sm:text-3xl">Top Picks</h2>
                 <div class="swiper h-56">
                     <!-- Additional required wrapper -->
-                    <div class="swiper-wrapper flex h-full items-center justify-center rounded-lg">
+                    <div class="swiper-wrapper flex h-full rounded-lg">
                         <!-- Slides -->
                         <div class="swiper-slide h-full overflow-hidden rounded-lg"><img src="{{ asset('img/c1.jpg') }}"
                                  alt=""></div>
@@ -102,7 +102,7 @@
                         <a class="block rounded-lg bg-brown-100 p-4 text-my-white shadow-sm shadow-brown-200 transition-all hover:-translate-y-2"
                            href="{{ route('restaurant.show', $restaurant['id']) }}">
                             <img class="aspect-[15/16] w-full rounded-md object-cover"
-                                 src="{{ asset('img/' . $restaurant['image'] . '.png') }}"
+                                 src="{{ $restaurant['image'] == NULL ? asset('img/Frame70.png') : $restaurant['image'] }}"
                                  alt="{{ $restaurant['name'] }}" />
                             <div class="mt-2">
                                 <dl>

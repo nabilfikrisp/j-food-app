@@ -1,6 +1,22 @@
 @extends('admin.layouts.admin-app')
 @section('admin-main')
     <div class="relative flex h-full w-full flex-col items-center justify-center py-10 text-2xl font-semibold">
+        @if (session('success'))
+            <div class="alert z-10 mb-4 rounded-lg bg-green-500 px-8 py-4 text-base" role="alert" x-cloak x-show="showAlert"
+                 x-data="{ showAlert: true }">
+                {{ session('success') }}
+
+                <button class="button rounded-md !bg-green-700 p-4" @click="showAlert = false">Close</button>
+            </div>
+        @endif
+        @if (session('error'))
+            <div class="alert z-10 mb-4 rounded-lg bg-red-500 px-8 py-4 text-base" role="alert" x-cloak x-show="showAlert"
+                 x-data="{ showAlert: true }">
+                {{ session('error') }}
+
+                <button class="button rounded-md !bg-red-700 p-4" @click="showAlert = false">Close</button>
+            </div>
+        @endif
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y-2 divide-gray-200 rounded-lg bg-white text-sm">
                 <thead class="ltr:text-left rtl:text-right">
@@ -55,6 +71,6 @@
             </table>
         </div>
         <a class="absolute top-10 left-8 rounded-md bg-green-500 px-4 py-2 text-sm font-medium text-white hover:bg-green-600"
-       href="{{ route('admin.restaurant.create') }}">Create Restaurant</a>
+           href="{{ route('admin.restaurant.create') }}">Create Restaurant</a>
     </div>
 @endsection

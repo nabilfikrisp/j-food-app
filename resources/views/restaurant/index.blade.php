@@ -1,4 +1,9 @@
 @extends('layouts.app')
+@section('link')
+    <link href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" rel="stylesheet" />
+    @vite(['resources/css/swiper.css'])
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+@endsection
 @section('main')
     <div class="page-container flex w-full flex-col gap-y-10 px-20 py-10">
         <section class="relative flex flex-col justify-center sm:flex-row" id="restaurant-index__navigation">
@@ -136,63 +141,308 @@
                 </div>
             </form>
         </section>
-        <section class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4" id="restaurants">
-            @foreach ($restaurants as $restaurant)
-                <a class="block rounded-lg bg-brown-100 p-4 text-my-white shadow-sm shadow-brown-200 transition-all hover:-translate-y-2"
-                   href="{{ route('restaurant.show', $restaurant['id']) }}">
-                    <img class="aspect-[15/16] w-full rounded-md object-cover"
-                         src="{{ asset('img/' . $restaurant['image'] . '.png') }}" alt="{{ $restaurant['name'] }}" />
-                    <div class="mt-2">
-                        <dl>
-                            <div>
-                                <dt class="sr-only">Name</dt>
+        <section class="flex w-full flex-col gap-y-5 font-semibold text-my-white">
+            <h2 class="text-3xl">Paling Disukai</h2>
+            <div class="swiper mySwiper1 h-auto">
+                <!-- Additional required wrapper -->
+                <div class="swiper-wrapper flex h-full rounded-lg">
+                    <!-- Slides -->
+                    @foreach ($restaurants_most_rated as $restaurant)
+                        <div
+                             class="swiper-slide h-full overflow-hidden rounded-lg shadow-sm shadow-brown-200 transition-all hover:translate-y-2">
+                            <a class="block w-full rounded-lg bg-brown-100 p-4 text-my-white"
+                               href="{{ route('restaurant.show', $restaurant['id']) }}">
+                                <img class="aspect-[15/16] w-full rounded-md object-cover"
+                                     src="{{ $restaurant['image'] == null ? asset('img/Frame70.png') : asset('storage/' . $restaurant['image']) }}"
+                                     alt="{{ $restaurant['name'] }}" />
+                                <div class="mt-2">
+                                    <dl>
+                                        <div>
+                                            <dt class="sr-only">Name</dt>
 
-                                <dd class="text-xl font-semibold">{{ $restaurant['name'] }}</dd>
-                            </div>
-                            <div>
-                                <dt class="sr-only">Address</dt>
+                                            <dd class="text-xl font-semibold">{{ $restaurant['name'] }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt class="sr-only">Address</dt>
 
-                                <dd class="text-xs">{{ $restaurant['address'] }}, {{ $restaurant['city'] }}</dd>
-                            </div>
-                        </dl>
+                                            <dd class="text-xs">{{ $restaurant['address'] }}, {{ $restaurant['city'] }}
+                                            </dd>
+                                        </div>
+                                    </dl>
 
-                        <div class="mt-6 grid grid-cols-2 gap-8 text-xs">
-                            <div class="sm:inline-flex sm:shrink-0 sm:items-center sm:gap-2">
-                                <div class="mt-1.5 sm:mt-0">
-                                    <p class="font-semibold text-my-white">Price Start From</p>
+                                    <div class="mt-6 grid grid-cols-2 gap-8 text-xs">
+                                        <div class="sm:inline-flex sm:shrink-0 sm:items-center sm:gap-2">
+                                            <div class="mt-1.5 sm:mt-0">
+                                                <p class="font-semibold text-my-white">Price Start From</p>
 
-                                    <p class="font-medium">Rp. {{ $restaurant['price_start'] }}</p>
+                                                <p class="font-medium">Rp. {{ $restaurant['price_start'] }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="sm:inline-flex sm:shrink-0 sm:items-center sm:gap-2">
+
+                                            <div class="mt-1.5 sm:mt-0">
+                                                <p class="font-semibold text-my-white">Rating</p>
+
+                                                <p class="flex gap-x-1 font-medium">
+                                                    <span class="flex items-center">
+                                                        <svg class="icon icon-tabler icon-tabler-star-filled"
+                                                             xmlns="http://www.w3.org/2000/svg" width="12"
+                                                             height="12" viewBox="0 0 24 24" stroke-width="2"
+                                                             stroke="currentColor" fill="none" stroke-linecap="round"
+                                                             stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                            <path d="M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z"
+                                                                  stroke-width="0" fill="currentColor"></path>
+                                                        </svg>
+                                                    </span>
+                                                    {{ $restaurant['rating'] ? $restaurant['rating'] : '-' }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="sm:inline-flex sm:shrink-0 sm:items-center sm:gap-2">
-
-                                <div class="mt-1.5 sm:mt-0">
-                                    <p class="font-semibold text-my-white">Rating</p>
-
-                                    <p class="flex gap-x-1 font-medium">
-                                        <span class="flex items-center">
-                                            <svg class="icon icon-tabler icon-tabler-star-filled"
-                                                 xmlns="http://www.w3.org/2000/svg" width="12" height="12"
-                                                 viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                                 fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                <path d="M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z"
-                                                      stroke-width="0" fill="currentColor"></path>
-                                            </svg>
-                                        </span>
-                                        {{ $restaurant['rating'] }}
-                                    </p>
-                                </div>
-                            </div>
+                            </a>
                         </div>
-                    </div>
-                </a>
-            @endforeach
+                    @endforeach
+                </div>
+
+                <!-- If we need navigation buttons -->
+                <div class="swiper-button-prev text-white"></div>
+                <div class="swiper-button-next text-white"></div>
+            </div>
         </section>
-        {{ $restaurants->links() }}
+        <section class="flex w-full flex-col gap-y-5 overflow-hidden font-semibold text-my-white">
+            <h2 class="text-3xl">Paket Hemat</h2>
+            <div class="swiper mySwiper2 h-auto">
+                <!-- Additional required wrapper -->
+                <div class="swiper-wrapper flex h-full rounded-lg">
+                    <!-- Slides -->
+                    @foreach ($restaurants_lowest_price as $restaurant)
+                        <div
+                             class="swiper-slide h-full overflow-hidden rounded-lg shadow-sm shadow-brown-200 transition-all hover:translate-y-2">
+                            <a class="block w-full rounded-lg bg-brown-100 p-4 text-my-white"
+                               href="{{ route('restaurant.show', $restaurant['id']) }}">
+                                <img class="aspect-[15/16] w-full rounded-md object-cover"
+                                     src="{{ $restaurant['image'] == null ? asset('img/Frame70.png') : asset('storage/' . $restaurant['image']) }}"
+                                     alt="{{ $restaurant['name'] }}" />
+                                <div class="mt-2">
+                                    <dl>
+                                        <div>
+                                            <dt class="sr-only">Name</dt>
+
+                                            <dd class="text-xl font-semibold">{{ $restaurant['name'] }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt class="sr-only">Address</dt>
+
+                                            <dd class="text-xs">{{ $restaurant['address'] }}, {{ $restaurant['city'] }}
+                                            </dd>
+                                        </div>
+                                    </dl>
+
+                                    <div class="mt-6 grid grid-cols-2 gap-8 text-xs">
+                                        <div class="sm:inline-flex sm:shrink-0 sm:items-center sm:gap-2">
+                                            <div class="mt-1.5 sm:mt-0">
+                                                <p class="font-semibold text-my-white">Price Start From</p>
+
+                                                <p class="font-medium">Rp. {{ $restaurant['price_start'] }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="sm:inline-flex sm:shrink-0 sm:items-center sm:gap-2">
+
+                                            <div class="mt-1.5 sm:mt-0">
+                                                <p class="font-semibold text-my-white">Rating</p>
+
+                                                <p class="flex gap-x-1 font-medium">
+                                                    <span class="flex items-center">
+                                                        <svg class="icon icon-tabler icon-tabler-star-filled"
+                                                             xmlns="http://www.w3.org/2000/svg" width="12"
+                                                             height="12" viewBox="0 0 24 24" stroke-width="2"
+                                                             stroke="currentColor" fill="none" stroke-linecap="round"
+                                                             stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                            <path d="M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z"
+                                                                  stroke-width="0" fill="currentColor"></path>
+                                                        </svg>
+                                                    </span>
+                                                    {{ $restaurant['rating'] ? $restaurant['rating'] : '-' }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    @endforeach
+                </div>
+
+                <!-- If we need navigation buttons -->
+                <div class="swiper-button-prev text-white"></div>
+                <div class="swiper-button-next text-white"></div>
+            </div>
+        </section>
+        <section class="flex w-full flex-col gap-y-5 overflow-hidden font-semibold text-my-white">
+            <h2 class="text-3xl">Awal Bulan</h2>
+            <div class="swiper mySwiper3 h-auto">
+                <!-- Additional required wrapper -->
+                <div class="swiper-wrapper flex h-full rounded-lg">
+                    <!-- Slides -->
+                    @foreach ($restaurants_highest_price as $restaurant)
+                        <div
+                             class="swiper-slide h-full overflow-hidden rounded-lg shadow-sm shadow-brown-200 transition-all hover:translate-y-2">
+                            <a class="block w-full rounded-lg bg-brown-100 p-4 text-my-white"
+                               href="{{ route('restaurant.show', $restaurant['id']) }}">
+                                <img class="aspect-[15/16] h-52 !w-full rounded-md object-cover"
+                                     src="{{ $restaurant['image'] == null ? asset('img/Frame70.png') : asset('storage/' . $restaurant['image']) }}"
+                                     alt="{{ $restaurant['name'] }}" />
+                                <div class="mt-2">
+                                    <dl>
+                                        <div>
+                                            <dt class="sr-only">Name</dt>
+
+                                            <dd class="text-xl font-semibold">{{ $restaurant['name'] }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt class="sr-only">Address</dt>
+
+                                            <dd class="text-xs">{{ $restaurant['address'] }}, {{ $restaurant['city'] }}
+                                            </dd>
+                                        </div>
+                                    </dl>
+
+                                    <div class="mt-6 grid grid-cols-2 gap-8 text-xs">
+                                        <div class="sm:inline-flex sm:shrink-0 sm:items-center sm:gap-2">
+                                            <div class="mt-1.5 sm:mt-0">
+                                                <p class="font-semibold text-my-white">Price Start From</p>
+
+                                                <p class="font-medium">Rp. {{ $restaurant['price_start'] }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="sm:inline-flex sm:shrink-0 sm:items-center sm:gap-2">
+
+                                            <div class="mt-1.5 sm:mt-0">
+                                                <p class="font-semibold text-my-white">Rating</p>
+
+                                                <p class="flex gap-x-1 font-medium">
+                                                    <span class="flex items-center">
+                                                        <svg class="icon icon-tabler icon-tabler-star-filled"
+                                                             xmlns="http://www.w3.org/2000/svg" width="12"
+                                                             height="12" viewBox="0 0 24 24" stroke-width="2"
+                                                             stroke="currentColor" fill="none" stroke-linecap="round"
+                                                             stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                            <path d="M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z"
+                                                                  stroke-width="0" fill="currentColor"></path>
+                                                        </svg>
+                                                    </span>
+                                                    {{ $restaurant['rating'] ? $restaurant['rating'] : '-' }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    @endforeach
+                </div>
+
+                <!-- If we need navigation buttons -->
+                <div class="swiper-button-prev text-white"></div>
+                <div class="swiper-button-next text-white"></div>
+            </div>
+        </section>
     </div>
 @endsection
 
 @section('script')
     @vite(['resources/js/filter.js'])
+    <script>
+        let swiper1 = new Swiper(".mySwiper1", {
+            slidesPerView: 4,
+            spaceBetween: 1,
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            breakpoints: {
+                // when window width is >= 320px
+                320: {
+                    slidesPerView: 1,
+                    spaceBetween: 2,
+                },
+                // when window width is >= 480px
+                640: {
+                    slidesPerView: 2,
+                    spaceBetween: 10,
+                },
+                // when window width is >= 640px
+                820: {
+                    slidesPerView: 4,
+                    spaceBetween: 10,
+                },
+            },
+        });
+        let swiper2 = new Swiper(".mySwiper2", {
+            slidesPerView: 4,
+            spaceBetween: 1,
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            breakpoints: {
+                // when window width is >= 320px
+                320: {
+                    slidesPerView: 1,
+                    spaceBetween: 2,
+                },
+                // when window width is >= 480px
+                640: {
+                    slidesPerView: 2,
+                    spaceBetween: 10,
+                },
+                // when window width is >= 640px
+                820: {
+                    slidesPerView: 4,
+                    spaceBetween: 10,
+                },
+            },
+        });
+        let swiper3 = new Swiper(".mySwiper3", {
+            slidesPerView: 4,
+            spaceBetween: 1,
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            breakpoints: {
+                // when window width is >= 320px
+                320: {
+                    slidesPerView: 1,
+                    spaceBetween: 2,
+                },
+                // when window width is >= 480px
+                640: {
+                    slidesPerView: 2,
+                    spaceBetween: 10,
+                },
+                // when window width is >= 640px
+                820: {
+                    slidesPerView: 4,
+                    spaceBetween: 10,
+                },
+            },
+        });
+    </script>
 @endsection

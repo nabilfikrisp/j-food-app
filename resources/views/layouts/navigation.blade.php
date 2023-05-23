@@ -11,18 +11,20 @@
                     <div class="hidden items-center sm:flex sm:gap-4">
                         <nav class="md:block" aria-label="Site Nav">
                             <ul class="flex items-center gap-6 text-sm">
-                                @if (auth()->user()->role == 'A')
-                                    <li>
-                                        <a class="text-orange transition duration-300 hover:text-orange/75"
-                                           href="{{ route('admin.dashboard') }}">
-                                            Dashboard
-                                        </a>
-                                    </li>
+                                @if (auth()->user())
+                                    @if (auth()->user()->role == 'A')
+                                        <li>
+                                            <a class="text-orange transition duration-300 hover:text-orange/75"
+                                               href="{{ route('admin.dashboard') }}">
+                                                Dashboard
+                                            </a>
+                                        </li>
+                                    @endif
                                 @endif
                                 <li>
                                     <a class="text-orange transition duration-300 hover:text-orange/75"
                                        href="{{ route('restaurant.index') }}">
-                                        Trending
+                                        Restaurant
                                     </a>
                                 </li>
                                 <li>

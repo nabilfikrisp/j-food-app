@@ -30,7 +30,7 @@ class Restaurant extends Model
 
     public function getReviewsAttribute()
     {
-        return Review::whereBelongsTo($this)->get();
+        return Review::whereBelongsTo($this)->orderBy('id', 'desc')->get();
     }
 
     public function getRestaurantImagesAttribute()

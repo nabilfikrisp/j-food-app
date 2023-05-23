@@ -7,7 +7,9 @@ use App\Http\Controllers\TestController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RestaurantController;
+use App\Http\Controllers\ReviewController;
 use App\Models\Restaurant;
+use App\Models\Review;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,9 +37,11 @@ Route::middleware('auth')->group(function () {
     Route::resource('restaurant', RestaurantController::class);
     Route::get('/search', [RestaurantController::class, 'search'])->name('restaurant.search');
 
+    Route::resource('review', ReviewController::class);
+
     Route::middleware('IsAdmin')->prefix('admin')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
-        Route::get('/restaurant', [RestaurantController::class, 'index'])->name('admin.restaurant.index');
+        Route::get('/restaurant', [AdminController::class, 'restaurantsIndex'])->name('admin.restaurant.index');
         Route::get('/restaurant/create', [RestaurantController::class, 'create'])->name('admin.restaurant.create');
         Route::get('/restaurant/store', [RestaurantController::class, 'store'])->name('admin.restaurant.store');
     });

@@ -22,7 +22,7 @@
         </nav>
         <!-- Page Content -->
         <main class="flex-1">
-            <div class="flex h-screen">
+            <div class="flex min-h-screen">
                 <!-- Sidebar -->
                 @include('admin.layouts.sidebar')
 

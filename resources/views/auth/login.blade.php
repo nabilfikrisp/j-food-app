@@ -9,15 +9,15 @@
             <main class="flex items-center justify-center lg:col-span-7 xl:col-span-6" aria-label="Main">
                 <div class="w-96 max-w-xl lg:max-w-3xl">
                     @if (session('success'))
-                        <div class="alert mb-5 flex gap-x-2 rounded-lg bg-emerald-600 p-4 justify-between items-center" role="alert" x-cloak
-                             x-show="showAlert" x-data="{ showAlert: true }">
+                        <div class="alert mb-5 flex items-center justify-between gap-x-2 rounded-lg bg-emerald-600 p-4"
+                             role="alert" x-cloak x-show="showAlert" x-data="{ showAlert: true }">
                             {{ session('success') }}
                             <button class="button rounded-md !bg-emerald-700 p-2" @click="showAlert = false">Close</button>
                         </div>
                     @endif
                     @if (session('error'))
-                        <div class="alert mb-5 flex gap-x-2 rounded-lg bg-rose-600 p-4 justify-between items-center" role="alert" x-cloak
-                             x-show="showAlert" x-data="{ showAlert: true }">
+                        <div class="alert mb-5 flex items-center justify-between gap-x-2 rounded-lg bg-rose-600 p-4"
+                             role="alert" x-cloak x-show="showAlert" x-data="{ showAlert: true }">
                             {{ session('error') }}
                             <button class="button rounded-md !bg-rose-700 p-2" @click="showAlert = false">Close</button>
                         </div>
@@ -55,7 +55,7 @@
                             <p class="mt-4 text-sm text-white sm:mt-0">
                                 Not a member?
                                 <a class="text-white underline transition-all duration-300 hover:text-brown-400"
-                                   href="#">Register Now</a>.
+                                   href="{{ route('register') }}">Register Now</a>.
                             </p>
                         </div>
                     </form>
