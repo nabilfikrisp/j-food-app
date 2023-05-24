@@ -10,8 +10,18 @@
     <div class="min-h-screen bg-orange">
         @include('discussion.sidebar')
         <div class="mx-auto flex min-h-screen w-[800px] flex-col bg-my-white px-6 py-4 shadow">
+            <a class="mb-4 w-fit transition-all hover:-translate-x-1" href="{{ route('discussion.index') }}">
+                <svg class="icon icon-tabler icon-tabler-arrow-left" xmlns="http://www.w3.org/2000/svg" width="24"
+                     height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                     stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M5 12l14 0"></path>
+                    <path d="M5 12l6 6"></path>
+                    <path d="M5 12l6 -6"></path>
+                </svg>
+            </a>
             <div class="mb-4 h-fit w-full rounded-lg bg-slate-200 p-4">
-                <div class="flex text-brown-400" href="{{ route('discussion.show', $discussion->id) }}">
+                <div class="flex text-brown-400">
                     <div class="mr-4 h-10 w-10 rounded-lg bg-brown-200"></div>
                     <div class="discussion-container flex w-3/4 flex-1 flex-col">
                         <h2 class="font-semibold">{{ $discussion->user->first_name }}
@@ -37,6 +47,8 @@
                                 <div class="swiper-button-next text-white"></div>
                             </div>
                         @endif
+                        <a class="mb-2 text-sm text-blue-500 hover:text-blue-400"
+                           href="#">#{{ $discussion->forumCategory->name }}</a>
                         <div class="flex gap-x-4">
                             <div class="flex items-center justify-center gap-x-1">
                                 <svg class="icon icon-tabler icon-tabler-message-circle-2"
@@ -71,7 +83,7 @@
                             </div>
 
                             <form id="unlike-form"
-                                  action="/like/delete/@if ($discussion->likes->where('user_id', '=', auth()->user()->id)->count() > 0){{ $discussion->likes->where('user_id', '=', auth()->user()->id)->first()->id }}@endif"
+                                  action="/like/delete/@if ($discussion->likes->where('user_id', '=', auth()->user()->id)->count() > 0) {{ $discussion->likes->where('user_id', '=', auth()->user()->id)->first()->id }} @endif"
                                   method="POST" hidden>
                                 @csrf
                                 <input id="discussion_thread_id_input" name="discussion_thread_id" type="text"
@@ -84,8 +96,8 @@
                                 @csrf
                                 <input id="discussion_thread_id_input" name="discussion_thread_id" type="text"
                                        value="{{ $discussion->id }}" hidden>
-                                <input id="user_id_input" name="user_id" type="text" value="{{ auth()->user()->id }}"
-                                       hidden>
+                                <input id="user_id_input" name="user_id" type="text"
+                                       value="{{ auth()->user()->id }}" hidden>
                             </form>
 
                         </div>
