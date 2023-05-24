@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
-
+    <link type="image/icon type" href="{{ asset('img/logo.png') }}" rel="icon">
     <!-- Fonts -->
     {{-- <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" /> --}}
     <!-- Link Swiper's CSS -->
@@ -18,7 +18,7 @@
 </head>
 
 <body class="antialiased">
-    <div class="min-h-screen bg-orange flex flex-col">
+    <div class="flex min-h-screen flex-col bg-orange">
         @include('layouts.navigation')
         <!-- Page Content -->
         <main class="flex-1">
