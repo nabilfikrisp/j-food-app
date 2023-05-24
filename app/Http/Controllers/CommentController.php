@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreCommentRequest;
 use App\Http\Requests\UpdateCommentRequest;
 
@@ -34,9 +35,23 @@ class CommentController extends Controller
      * @param  \App\Http\Requests\StoreCommentRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreCommentRequest $request)
+    public function store(Request $request)
     {
-        //
+        // dd($request);
+        $request->validate([
+            'user_id' => 'required',
+            'discussion_thread_id' => 'required',
+            'body' => 'required',
+        ]);
+
+        $comment = new Comment();
+        $comment->user_id = $request->input('user_id');
+        $comment->discussion_thread_id = $request->input('discussion_thread_id');
+        $comment->body = $request->input('body');
+        $comment->save();
+
+        // Redirect or do something else
+        return redirect()->back()->with('success', 'Comment created successfully!');
     }
 
     /**

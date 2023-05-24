@@ -67,6 +67,11 @@ class User extends Authenticatable
         return $this->hasMany(Comment::class);
     }
 
+    public function likes(): HasMany
+    {
+        return $this->hasMany(Likes::class);
+    }
+
     public function discussion_threads(): HasMany
     {
         return $this->hasMany(Discussion_Thread::class);

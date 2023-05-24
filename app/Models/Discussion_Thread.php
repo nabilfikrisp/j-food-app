@@ -18,7 +18,7 @@ class Discussion_Thread extends Model
         'id'
     ];
 
-    protected $appends = ['comments'];
+    protected $appends = ['comments', 'thread_images'];
 
 
     public function user(): BelongsTo
@@ -31,13 +31,33 @@ class Discussion_Thread extends Model
         return $this->hasMany(Comment::class);
     }
 
-    public function forum_category(): BelongsTo
+    public function likes(): HasMany
+    {
+        return $this->hasMany(Like::class);
+    }
+
+    public function forumCategory(): BelongsTo
     {
         return $this->belongsTo(Forum_Category::class);
+    }
+
+    public function thread_images(): HasMany
+    {
+        return $this->hasMany(Thread_Image::class);
     }
 
     public function getCommentsAttribute()
     {
         return Comment::whereBelongsTo($this)->get();
+    }
+
+    public function getThreadImagesAttribute()
+    {
+        return Thread_Image::whereBelongsTo($this)->get();
+    }
+
+    public function getLikesAttribute()
+    {
+        return Like::whereBelongsTo($this)->get();
     }
 }

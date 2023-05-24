@@ -1,15 +1,19 @@
 <?php
 
+use App\Models\Review;
+use App\Models\Restaurant;
+use App\Models\Discussion_Thread;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RestaurantController;
-use App\Http\Controllers\ReviewController;
-use App\Models\Restaurant;
-use App\Models\Review;
+use App\Http\Controllers\DiscussionThreadController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +42,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/search', [RestaurantController::class, 'search'])->name('restaurant.search');
 
     Route::resource('review', ReviewController::class);
+    Route::resource('discussion', DiscussionThreadController::class);
+    Route::resource('comment', CommentController::class);
+    Route::resource('like', LikeController::class);
+    Route::post('/like/delete/{id}', [LikeController::class, 'destroy']);
 
     Route::middleware('IsAdmin')->prefix('admin')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');

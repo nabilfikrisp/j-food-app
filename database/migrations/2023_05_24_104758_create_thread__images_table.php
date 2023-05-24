@@ -13,12 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('discussion__threads', function (Blueprint $table) {
+        Schema::create('thread__images', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id');
-            $table->foreignId('forum_category_id')->nullable();
-            $table->string('title');
-            $table->text('body');
+            $table->foreignId('discussion_thread_id');
+            $table->string('url');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('discussion__threads');
+        Schema::dropIfExists('thread__images');
     }
 };

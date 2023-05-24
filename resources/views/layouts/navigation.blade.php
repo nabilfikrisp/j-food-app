@@ -28,8 +28,9 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="text-orange transition duration-300 hover:text-orange/75" href="/">
-                                        Community
+                                    <a class="text-orange transition duration-300 hover:text-orange/75"
+                                       href="{{ route('discussion.index') }}">
+                                        Discussion
                                     </a>
                                 </li>
                             </ul>
@@ -81,8 +82,8 @@
                                     Trending
                                 </a>
                                 <a class="block rounded-lg px-4 py-2 text-sm text-orange hover:bg-brown-300"
-                                   href="#" role="menuitem">
-                                    Community
+                                   href="{{ route('discussion.index') }}" role="menuitem">
+                                    Discussion
                                 </a>
                                 <a class="block rounded-lg px-4 py-2 text-sm text-orange hover:bg-brown-300"
                                    href="#" role="menuitem">
