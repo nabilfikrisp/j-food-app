@@ -30,7 +30,7 @@
                                 <li>
                                     <a class="text-orange transition duration-300 hover:text-orange/75"
                                        href="{{ route('discussion.index') }}">
-                                        Discussion
+                                        Community
                                     </a>
                                 </li>
                             </ul>
@@ -83,7 +83,7 @@
                                 </a>
                                 <a class="block rounded-lg px-4 py-2 text-sm text-orange hover:bg-brown-300"
                                    href="{{ route('discussion.index') }}" role="menuitem">
-                                    Discussion
+                                    Community
                                 </a>
                                 <a class="block rounded-lg px-4 py-2 text-sm text-orange hover:bg-brown-300"
                                    href="#" role="menuitem">

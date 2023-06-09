@@ -91,44 +91,63 @@
                                             <div class="swiper-button-next text-white"></div>
                                         </div>
                                     @endif
-                                    <a class="text-sm text-blue-500 hover:text-blue-400 mb-2"
+                                    <a class="mb-2 text-sm text-blue-500 hover:text-blue-400"
                                        href="#">#{{ $discussion->forumCategory->name }}</a>
-                                    <a class="flex gap-x-4" href="{{ route('discussion.show', $discussion->id) }}">
-                                        <div class="flex items-center justify-center gap-x-1">
-                                            <svg class="icon icon-tabler icon-tabler-message-circle-2"
-                                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                 viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                                 stroke-linecap="round" stroke-linejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                <path d="M3 20l1.3 -3.9a9 8 0 1 1 3.4 2.9l-4.7 1"></path>
-                                            </svg>
-                                            {{ $discussion->comments->count() }} comments
-                                        </div>
-
+                                    <div class="flex flex-row gap-x-4">
+                                        <a href="{{ route('discussion.show', $discussion->id) }}">
+                                            <div class="flex items-center justify-center gap-x-1">
+                                                <svg class="icon icon-tabler icon-tabler-message-circle-2"
+                                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                     fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <path d="M3 20l1.3 -3.9a9 8 0 1 1 3.4 2.9l-4.7 1"></path>
+                                                </svg>
+                                                {{ $discussion->comments->count() }} comments
+                                            </div>
+                                        </a>
                                         <div class="flex items-center justify-center gap-x-1">
                                             <svg class="icon icon-tabler icon-tabler-heart @if ($discussion->likes->where('user_id', '=', auth()->user()->id)->count() > 0) hidden @endif"
-                                                 id="like-button" xmlns="http://www.w3.org/2000/svg" width="24"
-                                                 height="24" viewBox="0 0 24 24" stroke-width="2"
-                                                 stroke="currentColor" fill="none" stroke-linecap="round"
-                                                 stroke-linejoin="round">
+                                                 id="like-button-{{ $discussion->id }}"
+                                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                 viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                 fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                 <path
                                                       d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572">
                                                 </path>
                                             </svg>
                                             <svg class="icon icon-tabler icon-tabler-heart-filled @if ($discussion->likes->where('user_id', '=', auth()->user()->id)->count() == 0) hidden @endif"
-                                                 id="unlike-button" xmlns="http://www.w3.org/2000/svg" width="24"
-                                                 height="24" viewBox="0 0 24 24" stroke-width="2"
-                                                 stroke="currentColor" fill="none" stroke-linecap="round"
-                                                 stroke-linejoin="round">
+                                                 id="unlike-button-{{ $discussion->id }}"
+                                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                 viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                 fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                 <path d="M6.979 3.074a6 6 0 0 1 4.988 1.425l.037 .033l.034 -.03a6 6 0 0 1 4.733 -1.44l.246 .036a6 6 0 0 1 3.364 10.008l-.18 .185l-.048 .041l-7.45 7.379a1 1 0 0 1 -1.313 .082l-.094 -.082l-7.493 -7.422a6 6 0 0 1 3.176 -10.215z"
                                                       stroke-width="0" fill="currentColor"></path>
                                             </svg>
 
-                                            <span id="like-count">{{ $discussion->likes->count() }}</span> likes
+                                            <span id="like-count-{{ $discussion->id }}">{{ $discussion->likes->count() }}</span> likes
                                         </div>
-                                    </a>
+                                        <form id="unlike-form-{{ $discussion->id }}"
+                                              action="/like/delete/@if ($discussion->likes->where('user_id', '=', auth()->user()->id)->count() > 0) {{ $discussion->likes->where('user_id', '=', auth()->user()->id)->first()->id }} @endif"
+                                              method="POST" hidden>
+                                            @csrf
+                                            <input id="discussion_thread_id_input" name="discussion_thread_id"
+                                                   type="text" value="{{ $discussion->id }}" hidden>
+                                            <input id="user_id_input" name="user_id" type="text"
+                                                   value="{{ auth()->user()->id }}" hidden>
+                                        </form>
+
+                                        <form id="like-form-{{ $discussion->id }}" action="{{ route('like.store') }}"
+                                              hidden>
+                                            @csrf
+                                            <input id="discussion_thread_id_input" name="discussion_thread_id"
+                                                   type="text" value="{{ $discussion->id }}" hidden>
+                                            <input id="user_id_input" name="user_id" type="text"
+                                                   value="{{ auth()->user()->id }}" hidden>
+                                        </form>
+                                    </div>
                                 </div>
                         </li>
                     @endforeach
@@ -140,6 +159,8 @@
     @endsection
 
     @section('script')
+        <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
+                crossorigin="anonymous"></script>
         <script>
             const fileInput = document.getElementById('images');
             const fileIndicator = document.getElementById('selected-file-indicator');
@@ -181,5 +202,69 @@
                     },
                 },
             });
+
+            @foreach ($discussions as $discussion)
+                $(document).ready(function() {
+                    // Get the necessary elements
+                    const likeButton{{ $discussion->id }} = $('#like-button-' + {{ $discussion->id }});
+                    const unlikeButton{{ $discussion->id }} = $('#unlike-button-' + {{ $discussion->id }});
+                    const likeForm{{ $discussion->id }} = $('#like-form-' + {{ $discussion->id }});
+                    const unlikeForm{{ $discussion->id }} = $('#unlike-form-' + {{ $discussion->id }});
+
+                    // Add the click event handler to the like button
+                    likeButton{{ $discussion->id }}.on('click', async function() {
+                        // Check if the discussion thread is already liked or unliked
+
+                        // Like the discussion thread
+                        try {
+                            const response = await $.post(likeForm{{ $discussion->id }}.attr('action'),
+                                likeForm{{ $discussion->id }}.serialize());
+
+                            // Update UI for liking
+                            likeButton{{ $discussion->id }}.addClass('liked');
+                            likeButton{{ $discussion->id }}.addClass('hidden');
+                            unlikeButton{{ $discussion->id }}.removeClass('hidden');
+                            let likeCountElement{{ $discussion->id }} = $('#like-count-' + {{ $discussion->id }});
+                            let currentLikeCount = parseInt(likeCountElement{{ $discussion->id }}.text());
+                            likeCountElement{{ $discussion->id }}.text(currentLikeCount + 1);
+
+                            // Set the like ID for unliking
+                            $('#like_id_input').val(response.like_id);
+
+                            // Update the action attribute of the unlike form with the newly created like ID
+                            unlikeForm{{ $discussion->id }}.attr('action', '/like/delete/' +
+                                response.like_id);
+
+                            // Show the unlike form
+                            unlikeForm{{ $discussion->id }}.show();
+                        } catch (error) {
+                            console.error('An error occurred:', error);
+                        }
+
+                    });
+
+                    unlikeButton{{ $discussion->id }}.on('click', async function() {
+                        try {
+                            const response = await $.ajax({
+                                url: unlikeForm{{ $discussion->id }}.attr('action'),
+                                type: 'POST',
+                                data: unlikeForm{{ $discussion->id }}.serialize(),
+                            });
+
+                            // Update UI for unliking
+                            likeButton{{ $discussion->id }}.removeClass('liked');
+                            unlikeButton{{ $discussion->id }}.addClass('hidden');
+                            likeButton{{ $discussion->id }}.removeClass('hidden');
+                            let likeCountElement{{ $discussion->id }} = $('#like-count-' + {{ $discussion->id }});
+                            let currentLikeCount = parseInt(likeCountElement{{ $discussion->id }}.text());
+                            likeCountElement{{ $discussion->id }}.text(currentLikeCount - 1);
+
+                            // Remove the unlike form from the DOM
+                        } catch (error) {
+                            console.error('An error occurred:', error);
+                        }
+                    });
+                });
+            @endforeach
         </script>
     @endsection
