@@ -7,7 +7,8 @@
 @section('main')
     <div class="min-h-screen bg-orange">
         @include('discussion.sidebar')
-        <div class="mx-auto min-h-screen w-[800px] bg-my-white px-6 py-4 shadow">
+
+        <div class="mx-auto min-h-screen w-full bg-my-white px-6 py-4 shadow md:w-[800px]">
             <div class="mb-10 flex gap-x-4 rounded-lg bg-slate-200 p-6">
                 <div>
                     <img class="h-10 w-10 rounded-full" src="{{ asset('img/no-profile.jpg') }}" alt="">
@@ -49,7 +50,7 @@
                                     </svg>
                                 </label>
                             </div>
-                            <span class="text-sm text-gray-500" id="selected-file-indicator"></span>
+                            <span class="text-sm" id="selected-file-indicator"></span>
                         </div>
                         <div class="flex justify-end">
                             <button class="rounded-lg bg-brown-400 px-4 py-2 text-my-white hover:bg-brown-300"
@@ -62,7 +63,7 @@
             <div>
                 <ul>
                     @foreach ($discussions as $discussion)
-                        <li class="mb-4 w-full rounded-lg bg-slate-200 p-4">
+                        <li class="mb-4 w-full rounded-lg bg-slate-200 p-4 pr-12">
                             <div class="flex text-brown-400" href="{{ route('discussion.show', $discussion->id) }}">
                                 <div class="mr-4 h-10 w-10 rounded-lg bg-brown-200"></div>
                                 <div class="discussion-container flex w-3/4 flex-1 flex-col">
@@ -71,7 +72,7 @@
                                     <h3 class="mb-4 text-gray-600">@ {{ $discussion->user->username }}</h3>
                                     <a class="mb-2 text-2xl font-bold hover:text-slate-500"
                                        href="{{ route('discussion.show', $discussion->id) }}">{{ $discussion->title }}</a>
-                                    <p class="mb-2">{{ $discussion->body }}</p>
+                                    <p class="mb-2 line-clamp-6">{{ $discussion->body }}</p>
                                     @if ($discussion->thread_images->count() > 0)
                                         <div class="swiper mySwiper mb-4 h-56 w-full">
                                             <!-- Additional required wrapper -->
@@ -159,6 +160,17 @@
             </div>
 
         </div>
+        <ul class="fixed right-0 top-0 w-60 space-y-1 rounded-bl-xl bg-brown-400 p-4 text-my-white">
+            <h1 class="text-center text-xl font-semibold">Trending</h1>
+            @foreach ($trending as $trend)
+                <li>
+                    <a class="block rounded-lg px-4 py-2 text-center text-lg font-medium text-blue-400 hover:translate-x-1"
+                       href="">
+                        <span>#</span> {{ $trend->name }}
+                    </a>
+                </li>
+            @endforeach
+        </ul>
     @endsection
 
     @section('script')

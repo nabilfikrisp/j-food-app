@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Discussion_Thread;
-use App\Models\Forum_Category;
 use App\Models\Thread_Image;
+use Illuminate\Http\Request;
+use App\Models\Forum_Category;
+use App\Models\Discussion_Thread;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreDiscussion_ThreadRequest;
 use App\Http\Requests\UpdateDiscussion_ThreadRequest;
-use Illuminate\Http\Request;
 
 class DiscussionThreadController extends Controller
 {
@@ -18,9 +19,22 @@ class DiscussionThreadController extends Controller
      */
     public function index()
     {
-        $discussions = Discussion_Thread::paginate(20);
-        return view('discussion.index', ['discussions' => $discussions]);
+        $discussions = Discussion_Thread::orderBy('created_at', 'desc')->paginate(10);
+        $trendingCategories = Discussion_Thread::select('forum_category_id', DB::raw('COUNT(*) as count'))
+            ->groupBy('forum_category_id')
+            ->orderByDesc('count')
+            ->limit(5)
+            ->get();
+
+        $trendingCategoryIds = $trendingCategories->pluck('forum_category_id')->toArray();
+
+        $trending = Forum_Category::whereIn('id', $trendingCategoryIds)
+            ->orderByRaw("FIELD(id, " . implode(',', $trendingCategoryIds) . ")")
+            ->get();
+
+        return view('discussion.index', ['discussions' => $discussions, 'trending' => $trending]);
     }
+
 
     /**
      * Show the form for creating a new resource.
