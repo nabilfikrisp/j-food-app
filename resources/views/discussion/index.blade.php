@@ -106,8 +106,9 @@
                                                 {{ $discussion->comments->count() }} comments
                                             </div>
                                         </a>
-                                        <div class="flex items-center justify-center gap-x-1">
-                                            <svg class="icon icon-tabler icon-tabler-heart @if ($discussion->likes->where('user_id', '=', auth()->user()->id)->count() > 0) hidden @endif"
+                                        <div class="discussion flex items-center justify-center gap-x-1"
+                                             data-discussion-id="{{ $discussion->id }}">
+                                            <svg class="icon icon-tabler icon-tabler-heart like-button @if ($discussion->likes->where('user_id', '=', auth()->user()->id)->count() > 0) hidden @endif"
                                                  id="like-button-{{ $discussion->id }}"
                                                  xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                  viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -117,7 +118,7 @@
                                                       d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572">
                                                 </path>
                                             </svg>
-                                            <svg class="icon icon-tabler icon-tabler-heart-filled @if ($discussion->likes->where('user_id', '=', auth()->user()->id)->count() == 0) hidden @endif"
+                                            <svg class="icon icon-tabler icon-tabler-heart-filled unlike-button @if ($discussion->likes->where('user_id', '=', auth()->user()->id)->count() == 0) hidden @endif"
                                                  id="unlike-button-{{ $discussion->id }}"
                                                  xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                  viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -127,7 +128,9 @@
                                                       stroke-width="0" fill="currentColor"></path>
                                             </svg>
 
-                                            <span id="like-count-{{ $discussion->id }}">{{ $discussion->likes->count() }}</span> likes
+                                            <span
+                                                  id="like-count-{{ $discussion->id }}">{{ $discussion->likes->count() }}</span>
+                                            likes
                                         </div>
                                         <form id="unlike-form-{{ $discussion->id }}"
                                               action="/like/delete/@if ($discussion->likes->where('user_id', '=', auth()->user()->id)->count() > 0) {{ $discussion->likes->where('user_id', '=', auth()->user()->id)->first()->id }} @endif"
@@ -203,68 +206,66 @@
                 },
             });
 
-            @foreach ($discussions as $discussion)
-                $(document).ready(function() {
-                    // Get the necessary elements
-                    const likeButton{{ $discussion->id }} = $('#like-button-' + {{ $discussion->id }});
-                    const unlikeButton{{ $discussion->id }} = $('#unlike-button-' + {{ $discussion->id }});
-                    const likeForm{{ $discussion->id }} = $('#like-form-' + {{ $discussion->id }});
-                    const unlikeForm{{ $discussion->id }} = $('#unlike-form-' + {{ $discussion->id }});
+            $(document).ready(function() {
+                $('.like-button').on('click', async function() {
+                    // Get the discussion ID
+                    const discussionId = $(this).closest('.discussion').data('discussion-id');
 
-                    // Add the click event handler to the like button
-                    likeButton{{ $discussion->id }}.on('click', async function() {
-                        // Check if the discussion thread is already liked or unliked
+                    // Get the necessary elements based on the discussion ID
+                    const likeButton = $(`#like-button-${discussionId}`);
+                    const unlikeButton = $(`#unlike-button-${discussionId}`);
+                    const likeForm = $(`#like-form-${discussionId}`);
+                    const unlikeForm = $(`#unlike-form-${discussionId}`);
+                    const likeCountElement = $(`#like-count-${discussionId}`);
 
-                        // Like the discussion thread
-                        try {
-                            const response = await $.post(likeForm{{ $discussion->id }}.attr('action'),
-                                likeForm{{ $discussion->id }}.serialize());
+                    try {
+                        const response = await $.post(likeForm.attr('action'), likeForm.serialize());
 
-                            // Update UI for liking
-                            likeButton{{ $discussion->id }}.addClass('liked');
-                            likeButton{{ $discussion->id }}.addClass('hidden');
-                            unlikeButton{{ $discussion->id }}.removeClass('hidden');
-                            let likeCountElement{{ $discussion->id }} = $('#like-count-' + {{ $discussion->id }});
-                            let currentLikeCount = parseInt(likeCountElement{{ $discussion->id }}.text());
-                            likeCountElement{{ $discussion->id }}.text(currentLikeCount + 1);
+                        // Update UI for liking
+                        likeButton.addClass('liked').addClass('hidden');
+                        unlikeButton.removeClass('hidden');
+                        const currentLikeCount = parseInt(likeCountElement.text());
+                        likeCountElement.text(currentLikeCount + 1);
 
-                            // Set the like ID for unliking
-                            $('#like_id_input').val(response.like_id);
+                        // Set the like ID for unliking
+                        unlikeForm.attr('action', '/like/delete/' + response.like_id);
 
-                            // Update the action attribute of the unlike form with the newly created like ID
-                            unlikeForm{{ $discussion->id }}.attr('action', '/like/delete/' +
-                                response.like_id);
-
-                            // Show the unlike form
-                            unlikeForm{{ $discussion->id }}.show();
-                        } catch (error) {
-                            console.error('An error occurred:', error);
-                        }
-
-                    });
-
-                    unlikeButton{{ $discussion->id }}.on('click', async function() {
-                        try {
-                            const response = await $.ajax({
-                                url: unlikeForm{{ $discussion->id }}.attr('action'),
-                                type: 'POST',
-                                data: unlikeForm{{ $discussion->id }}.serialize(),
-                            });
-
-                            // Update UI for unliking
-                            likeButton{{ $discussion->id }}.removeClass('liked');
-                            unlikeButton{{ $discussion->id }}.addClass('hidden');
-                            likeButton{{ $discussion->id }}.removeClass('hidden');
-                            let likeCountElement{{ $discussion->id }} = $('#like-count-' + {{ $discussion->id }});
-                            let currentLikeCount = parseInt(likeCountElement{{ $discussion->id }}.text());
-                            likeCountElement{{ $discussion->id }}.text(currentLikeCount - 1);
-
-                            // Remove the unlike form from the DOM
-                        } catch (error) {
-                            console.error('An error occurred:', error);
-                        }
-                    });
+                        // Show the unlike form
+                        unlikeForm.show();
+                    } catch (error) {
+                        console.error('An error occurred:', error);
+                    }
                 });
-            @endforeach
+
+                $('.unlike-button').on('click', async function() {
+                    // Get the discussion ID
+                    const discussionId = $(this).closest('.discussion').data('discussion-id');
+
+                    // Get the necessary elements based on the discussion ID
+                    const likeButton = $(`#like-button-${discussionId}`);
+                    const unlikeButton = $(`#unlike-button-${discussionId}`);
+                    const likeForm = $(`#like-form-${discussionId}`);
+                    const unlikeForm = $(`#unlike-form-${discussionId}`);
+                    const likeCountElement = $(`#like-count-${discussionId}`);
+
+                    // Unlike the discussion thread
+                    try {
+                        const response = await $.ajax({
+                            url: unlikeForm.attr('action'),
+                            type: 'POST',
+                            data: unlikeForm.serialize(),
+                        });
+
+                        // Update UI for unliking
+                        likeButton.removeClass('liked');
+                        unlikeButton.addClass('hidden');
+                        likeButton.removeClass('hidden');
+                        const currentLikeCount = parseInt(likeCountElement.text());
+                        likeCountElement.text(currentLikeCount - 1);
+                    } catch (error) {
+                        console.error('An error occurred:', error);
+                    }
+                });
+            });
         </script>
     @endsection
