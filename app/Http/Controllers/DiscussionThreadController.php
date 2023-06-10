@@ -121,11 +121,21 @@ class DiscussionThreadController extends Controller
     {
         $request->validate([
             'user_id' => 'required',
-            'title' => 'required',
+            'title' => 'required|max:255',
             'content' => 'required',
             'images' => 'nullable|array',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'forum_category' => 'nullable|string',
+            'forum_category' => 'nullable|string|max:20',
+        ], [
+            'title.required' => 'Kolom judul harus diisi.',
+            'title.max' => 'Judul tidak boleh lebih dari :max karakter.',
+            'content.required' => 'Kolom diskusi harus diisi.',
+            'images.array' => 'Gambar harus berupa array.',
+            'images.*.image' => 'Gambar harus berupa file gambar.',
+            'images.*.mimes' => 'Gambar harus memiliki format: jpeg, png, jpg, gif.',
+            'images.*.max' => 'Ukuran gambar tidak boleh lebih dari :max kilobita.',
+            'forum_category.string' => 'Hashtag harus berupa teks.',
+            'forum_category.max' => 'Hashtag tidak boleh lebih dari :max karakter.',
         ]);
 
         if ($request->hasFile('images') && count($request->file('images')) > 5) {
@@ -141,29 +151,25 @@ class DiscussionThreadController extends Controller
             }
         }
 
-        // Create a new discussion thread
         $discussionThread = new Discussion_Thread();
         $discussionThread->user_id = $request->input('user_id');
         $discussionThread->title = $request->input('title');
         $discussionThread->body = $request->input('content');
 
-        // Associate forum_category (hashtag) with the discussion thread
         if ($request->has('forum_category')) {
             $forumCategoryName = $request->input('forum_category');
 
-            // Check if the forum category (hashtag) already exists
+            $forumCategoryName = ltrim($forumCategoryName, '#');
+
             $forumCategory = Forum_Category::where('name', $forumCategoryName)->first();
 
             if ($forumCategory) {
-                // Associate the existing forum category with the discussion thread
                 $discussionThread->forum_category_id = $forumCategory->id;
             } else {
-                // Create a new forum category (hashtag) if it doesn't exist
                 $newForumCategory = new Forum_Category();
                 $newForumCategory->name = $forumCategoryName;
                 $newForumCategory->save();
 
-                // Associate the new forum category with the discussion thread
                 $discussionThread->forum_category_id = $newForumCategory->id;
             }
         }
@@ -183,7 +189,7 @@ class DiscussionThreadController extends Controller
         }
 
         // Redirect or do something else
-        return redirect()->back()->with('success', 'Discussion thread created successfully!');
+        return redirect()->back()->with('success', 'Diskusi berhasil diunggah :)');
     }
 
     /**

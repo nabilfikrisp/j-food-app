@@ -14,7 +14,7 @@ sidebarToggle.addEventListener("click", function () {
 
 // Check screen size on initial load and resize
 function checkScreenSize() {
-    if (window.innerWidth > 800) {
+    if (window.innerWidth > 1200) {
         sidebar.classList.remove("hidden");
         sidebarSVGRight.classList.add("hidden");
         sidebarSVGLeft.classList.remove("hidden");

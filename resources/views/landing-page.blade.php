@@ -15,10 +15,12 @@
                     </strong>
                 </h1>
                 <div class="mt-8 flex flex-wrap items-center justify-center gap-4 text-center">
-                    <form class="mb-0 flex w-full max-w-sm items-center justify-center">
+                    <form class="mb-0 flex w-full max-w-sm items-center justify-center"
+                          action="{{ route('restaurant.search') }}" method="GET">
+                        @csrf
                         <div class="relative w-full max-w-sm">
                             <input class="h-10 w-full rounded-lg border-gray-200 text-sm placeholder-gray-300 focus:z-10"
-                                   type="text" placeholder="Search..." />
+                                   name="search" type="text" placeholder="Search..." />
 
                             <button class="end-0 absolute inset-y-0 rounded-r-lg p-2 text-gray-600" type="submit">
                                 <span class="sr-only">Submit Search</span>

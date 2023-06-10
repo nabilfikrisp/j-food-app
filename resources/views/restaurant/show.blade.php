@@ -32,7 +32,7 @@
         <section class="flex w-full flex-col gap-y-5 text-my-white" id="restaurant-show">
             <h1 class="text-4xl font-bold md:text-5xl">{{ $restaurant['name'] }}</h1>
             <div class="flex flex-col gap-x-5 gap-y-5 md:flex-row" id="restaurant-show__container">
-                <img class="col-span-1 aspect-square w-72 rounded-lg"
+                <img class="col-span-1 aspect-square w-96 rounded-lg object-contain bg-my-white"
                      src="{{ $restaurant['image'] == null ? asset('img/Frame70.png') : asset('storage/' . $restaurant['image']) }}"
                      alt="">
                 <div class="flex-1" id="restaurant-show__detail">

@@ -9,9 +9,30 @@
         @include('discussion.sidebar')
 
         <div class="flex flex-col-reverse">
+            <div class="mx-auto min-h-screen w-full bg-white px-6 py-4 shadow md:w-[800px]">
+                @if (session('success'))
+                    <div class="mb-4 rounded-xl border border-b-8 border-r-4 bg-slate-100 p-4" role="alert">
+                        <div class="flex items-start gap-4">
+                            <span class="text-green-600">
+                                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                     stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                          d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </span>
 
-            <div class="mx-auto min-h-screen w-full bg-my-white px-6 py-4 shadow md:w-[800px]">
-                <div class="mb-4 w-full rounded-lg bg-slate-200 p-4 px-6">
+                            <div class="flex-1">
+                                <strong class="block font-medium text-gray-900"> Berhasil </strong>
+
+                                <p class="mt-1 text-sm text-gray-700">
+                                    {{ session('success') }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
+                <div class="mb-4 w-full rounded-lg border-b-8 border-r-4 bg-slate-100 p-4 px-6">
                     <form action="{{ route('discussion.search') }}" method="GET">
                         @csrf
                         <div class="flex space-x-4">
@@ -33,7 +54,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="mb-10 flex gap-x-4 rounded-lg bg-slate-200 p-6">
+                <div class="mb-10 flex gap-x-4 rounded-lg border-b-8 border-r-4 bg-slate-100 p-6">
                     <div>
                         <img class="h-10 w-10 rounded-full" src="{{ asset('img/no-profile.jpg') }}" alt="">
                     </div>
@@ -45,17 +66,26 @@
                                 <label class="block text-lg font-medium text-brown-400" for="title">Judul</label>
                                 <input class="w-full rounded-lg border border-brown-300 px-4 py-2 focus:border-brown-400 focus:outline-none"
                                        id="title" name="title" type="text" placeholder="Judul Diskusi">
+                                @error('title')
+                                    <div class="mt-1 text-sm text-red-500">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="mb-4">
                                 <label class="block text-lg font-medium text-brown-400" for="content">Diskusi</label>
                                 <textarea class="w-full rounded-lg border border-brown-300 px-4 py-2 focus:border-brown-400 focus:outline-none"
                                           id="content" name="content" rows="4" placeholder="Isi diskusi"></textarea>
+                                @error('content')
+                                    <div class="mt-1 text-sm text-red-500">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="mb-4">
                                 <label class="block text-lg font-medium text-brown-400" for="hashtags">Hashtags</label>
                                 <input class="w-full rounded-lg border border-brown-300 px-4 py-2 focus:border-brown-400 focus:outline-none"
                                        id="forum_category" name="forum_category" type="text"
                                        placeholder="Tambahkan hashtag">
+                                @error('forum_category')
+                                    <div class="mt-1 text-sm text-red-500">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="mb-4 flex w-fit flex-row items-center justify-center gap-x-4">
                                 <div class="file-input-container transition-all hover:translate-y-1">
@@ -75,6 +105,9 @@
                                         </svg>
                                     </label>
                                 </div>
+                                @error('images')
+                                    <div class="mt-1 text-sm text-red-500">{{ $message }}</div>
+                                @enderror
                                 <span class="text-sm" id="selected-file-indicator"></span>
                             </div>
                             <div class="flex justify-end">
@@ -88,16 +121,24 @@
                 <div>
                     @if (isset($mostLiked))
                         <ul>
-                            <h1 class="m-2 text-xl font-semibold">Paling Disukai</h1>
+                            <h1 class="m-2 text-xl font-semibold text-slate-600">Paling Disukai</h1>
                             @foreach ($mostLiked as $discussion)
-                                <li class="mb-4 w-full rounded-lg bg-slate-200 p-4 pr-12">
-                                    <div class="flex text-brown-400" href="{{ route('discussion.show', $discussion->id) }}">
-                                        <div class="mr-4 h-10 w-10 rounded-lg bg-brown-200"></div>
+                                <li class="mb-4 w-full rounded-lg border-b-8 border-r-4 bg-slate-100 p-4 pr-12">
+                                    <div class="flex text-brown-400"
+                                         href="{{ route('discussion.show', $discussion->id) }}">
+                                        <div class="mr-4 h-12 w-12 overflow-hidden rounded-full bg-brown-200">
+                                            <img class="object-contain" src="{{ asset('img/profile.jpeg') }}"
+                                                 alt="">
+                                        </div>
                                         <div class="discussion-container flex w-3/4 flex-1 flex-col">
-                                            <h2 class="font-semibold">{{ $discussion->user->first_name }}
-                                                {{ $discussion->user->last_name }}</h2>
+                                            <div class="flex justify-between">
+                                                <h2 class="font-semibold">{{ $discussion->user->first_name }}
+                                                    {{ $discussion->user->last_name }}</h2>
+                                                <p>{{ $discussion->created_at->diffForHumans() }}</p>
+                                            </div>
+
                                             <h3 class="mb-4 text-gray-600">@ {{ $discussion->user->username }}</h3>
-                                            <a class="mb-2 text-2xl font-bold hover:text-slate-500"
+                                            <a class="line-clamp-2 mb-2 text-2xl font-bold hover:text-slate-500"
                                                href="{{ route('discussion.show', $discussion->id) }}">{{ $discussion->title }}</a>
                                             <p class="line-clamp-6 mb-2">{{ $discussion->body }}</p>
                                             @if ($discussion->thread_images->count() > 0)
@@ -187,16 +228,22 @@
                     @endif
 
                     <ul>
-                        <h1 class="m-2 mt-8 text-xl font-semibold">Terbaru</h1>
+                        <h1 class="m-2 mt-8 text-xl font-semibold text-slate-600">Terbaru</h1>
                         @foreach ($discussions as $discussion)
-                            <li class="mb-4 w-full rounded-lg bg-slate-200 p-4 pr-12">
+                            <li class="mb-4 w-full rounded-lg border-b-8 border-r-4 bg-slate-100 p-4 pr-12">
                                 <div class="flex text-brown-400" href="{{ route('discussion.show', $discussion->id) }}">
-                                    <div class="mr-4 h-10 w-10 rounded-lg bg-brown-200"></div>
+                                    <div class="mr-4 h-12 w-12 overflow-hidden rounded-full bg-brown-200">
+                                        <img class="object-contain" src="{{ asset('img/profile.jpeg') }}"
+                                             alt="">
+                                    </div>
                                     <div class="discussion-container flex w-3/4 flex-1 flex-col">
-                                        <h2 class="font-semibold">{{ $discussion->user->first_name }}
-                                            {{ $discussion->user->last_name }}</h2>
+                                        <div class="flex justify-between">
+                                            <h2 class="font-semibold">{{ $discussion->user->first_name }}
+                                                {{ $discussion->user->last_name }}</h2>
+                                            <p>{{ $discussion->created_at->diffForHumans() }}</p>
+                                        </div>
                                         <h3 class="mb-4 text-gray-600">@ {{ $discussion->user->username }}</h3>
-                                        <a class="mb-2 text-2xl font-bold hover:text-slate-500"
+                                        <a class="line-clamp-2 mb-2 text-2xl font-bold hover:text-slate-500"
                                            href="{{ route('discussion.show', $discussion->id) }}">{{ $discussion->title }}</a>
                                         <p class="line-clamp-6 mb-2">{{ $discussion->body }}</p>
                                         @if ($discussion->thread_images->count() > 0)
@@ -287,14 +334,14 @@
 
             </div>
             <ul
-                class="static right-0 top-0 w-full space-y-1 bg-brown-400 p-4 text-my-white md:fixed md:w-60 md:rounded-bl-xl">
+                class="static right-0 top-0 mx-auto w-full max-w-[800px] space-y-1 bg-brown-400 p-4 text-my-white xl:fixed xl:w-60 xl:rounded-bl-xl">
                 <h1 class="text-center text-xl font-semibold">Trending</h1>
-                <div class="flex flex-row flex-wrap items-center justify-center md:flex-col">
+                <div class="flex flex-row flex-wrap items-center justify-center xl:flex-col">
                     @foreach ($trending as $trend)
                         <li>
                             <a class="block rounded-lg px-4 py-2 text-center text-lg font-medium text-blue-400 hover:translate-x-1"
                                href="{{ route('category.myIndex', $trend->id) }}">
-                                <span>#</span> {{ $trend->name }}
+                                <span>#</span>{{ $trend->name }}
                             </a>
                         </li>
                     @endforeach
