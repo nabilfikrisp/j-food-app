@@ -61,7 +61,107 @@
                 </div>
             </div>
             <div>
+                @if (isset($mostLiked))
+                    <ul>
+                        <h1 class="text-xl font-semibold m-2">Viral</h1>
+                        @foreach ($mostLiked as $discussion)
+                            <li class="mb-4 w-full rounded-lg bg-slate-200 p-4 pr-12">
+                                <div class="flex text-brown-400" href="{{ route('discussion.show', $discussion->id) }}">
+                                    <div class="mr-4 h-10 w-10 rounded-lg bg-brown-200"></div>
+                                    <div class="discussion-container flex w-3/4 flex-1 flex-col">
+                                        <h2 class="font-semibold">{{ $discussion->user->first_name }}
+                                            {{ $discussion->user->last_name }}</h2>
+                                        <h3 class="mb-4 text-gray-600">@ {{ $discussion->user->username }}</h3>
+                                        <a class="mb-2 text-2xl font-bold hover:text-slate-500"
+                                           href="{{ route('discussion.show', $discussion->id) }}">{{ $discussion->title }}</a>
+                                        <p class="mb-2 line-clamp-6">{{ $discussion->body }}</p>
+                                        @if ($discussion->thread_images->count() > 0)
+                                            <div class="swiper mySwiper mb-4 h-56 w-full">
+                                                <!-- Additional required wrapper -->
+                                                <div class="swiper-wrapper flex h-full rounded-lg">
+                                                    <!-- Slides -->
+                                                    @foreach ($discussion->thread_images as $image)
+                                                        <div class="swiper-slide h-full overflow-hidden rounded-lg"><img
+                                                                 class="w-full rounded-lg"
+                                                                 src="{{ asset('storage/' . $image->url) }}"
+                                                                 alt="Review Image">
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+
+                                                <!-- If we need navigation buttons -->
+                                                <div class="swiper-button-prev text-white"></div>
+                                                <div class="swiper-button-next text-white"></div>
+                                            </div>
+                                        @endif
+                                        <a class="mb-2 text-sm text-blue-500 hover:text-blue-400"
+                                           href="#">#{{ $discussion->forumCategory->name }}</a>
+                                        <div class="flex flex-row gap-x-4">
+                                            <a href="{{ route('discussion.show', $discussion->id) }}">
+                                                <div class="flex items-center justify-center gap-x-1">
+                                                    <svg class="icon icon-tabler icon-tabler-message-circle-2"
+                                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                         viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                         fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                        <path d="M3 20l1.3 -3.9a9 8 0 1 1 3.4 2.9l-4.7 1"></path>
+                                                    </svg>
+                                                    {{ $discussion->comments->count() }} comments
+                                                </div>
+                                            </a>
+                                            <div class="discussion flex items-center justify-center gap-x-1"
+                                                 data-discussion-id="{{ $discussion->id }}">
+                                                <svg class="icon icon-tabler icon-tabler-heart like-button @if ($discussion->likes->where('user_id', '=', auth()->user()->id)->count() > 0) hidden @endif"
+                                                     id="like-button-{{ $discussion->id }}"
+                                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                     fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <path
+                                                          d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572">
+                                                    </path>
+                                                </svg>
+                                                <svg class="icon icon-tabler icon-tabler-heart-filled unlike-button @if ($discussion->likes->where('user_id', '=', auth()->user()->id)->count() == 0) hidden @endif"
+                                                     id="unlike-button-{{ $discussion->id }}"
+                                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                     fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <path d="M6.979 3.074a6 6 0 0 1 4.988 1.425l.037 .033l.034 -.03a6 6 0 0 1 4.733 -1.44l.246 .036a6 6 0 0 1 3.364 10.008l-.18 .185l-.048 .041l-7.45 7.379a1 1 0 0 1 -1.313 .082l-.094 -.082l-7.493 -7.422a6 6 0 0 1 3.176 -10.215z"
+                                                          stroke-width="0" fill="currentColor"></path>
+                                                </svg>
+
+                                                <span
+                                                      id="like-count-{{ $discussion->id }}">{{ $discussion->likes->count() }}</span>
+                                                likes
+                                            </div>
+                                            <form id="unlike-form-{{ $discussion->id }}"
+                                                  action="/like/delete/@if ($discussion->likes->where('user_id', '=', auth()->user()->id)->count() > 0) {{ $discussion->likes->where('user_id', '=', auth()->user()->id)->first()->id }} @endif"
+                                                  method="POST" hidden>
+                                                @csrf
+                                                <input id="discussion_thread_id_input" name="discussion_thread_id"
+                                                       type="text" value="{{ $discussion->id }}" hidden>
+                                                <input id="user_id_input" name="user_id" type="text"
+                                                       value="{{ auth()->user()->id }}" hidden>
+                                            </form>
+
+                                            <form id="like-form-{{ $discussion->id }}"
+                                                  action="{{ route('like.store') }}" hidden>
+                                                @csrf
+                                                <input id="discussion_thread_id_input" name="discussion_thread_id"
+                                                       type="text" value="{{ $discussion->id }}" hidden>
+                                                <input id="user_id_input" name="user_id" type="text"
+                                                       value="{{ auth()->user()->id }}" hidden>
+                                            </form>
+                                        </div>
+                                    </div>
+                            </li>
+                        @endforeach
+                    </ul>
+                @endif
+
                 <ul>
+                    <h1 class="text-xl font-semibold m-2 mt-8">Terbaru</h1>
                     @foreach ($discussions as $discussion)
                         <li class="mb-4 w-full rounded-lg bg-slate-200 p-4 pr-12">
                             <div class="flex text-brown-400" href="{{ route('discussion.show', $discussion->id) }}">

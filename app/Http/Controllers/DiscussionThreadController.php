@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Like;
 use App\Models\Thread_Image;
 use Illuminate\Http\Request;
 use App\Models\Forum_Category;
@@ -32,7 +33,30 @@ class DiscussionThreadController extends Controller
             ->orderByRaw("FIELD(id, " . implode(',', $trendingCategoryIds) . ")")
             ->get();
 
-        return view('discussion.index', ['discussions' => $discussions, 'trending' => $trending]);
+        $mostLikedDiscussions = Like::select('discussion_thread_id', DB::raw('COUNT(*) as likes_count'))
+            ->groupBy('discussion_thread_id')
+            ->orderByDesc('likes_count')
+            ->take(2)
+            ->get();
+
+        $mostLikedDiscussionIds = $mostLikedDiscussions->pluck('discussion_thread_id')->toArray();
+        $mostLikedDiscussionsData = Discussion_Thread::whereIn('id', $mostLikedDiscussionIds)
+            ->get()
+            ->sortBy(function ($discussion) use ($mostLikedDiscussions) {
+                $likedDiscussion = $mostLikedDiscussions->firstWhere('discussion_thread_id', $discussion->id);
+                return $likedDiscussion ? $likedDiscussion->likes_count : 0;
+            })
+            ->values();
+
+        $mostLikedDiscussionsData = $mostLikedDiscussionsData->sortByDesc(function ($discussion) use ($mostLikedDiscussions) {
+            $likedDiscussion = $mostLikedDiscussions->firstWhere('discussion_thread_id', $discussion->id);
+            return $likedDiscussion ? $likedDiscussion->likes_count : 0;
+        })->values();
+
+
+        // dd($mostLikedDiscussionIds);
+
+        return view('discussion.index', ['discussions' => $discussions, 'trending' => $trending, 'mostLiked' => $mostLikedDiscussionsData]);
     }
 
 
