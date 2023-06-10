@@ -44,6 +44,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('review', ReviewController::class);
     Route::resource('discussion', DiscussionThreadController::class);
+    Route::get('discussion-search', [DiscussionThreadController::class, 'search'])->name('discussion.search');
     Route::resource('comment', CommentController::class);
     Route::resource('like', LikeController::class);
     Route::resource('category', ForumCategoryController::class);

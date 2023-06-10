@@ -1,4 +1,4 @@
-<aside class="sidebar hidden min-h-screen w-64 bg-brown-400 py-10 text-my-white shadow fixed">
+<aside class="sidebar fixed hidden min-h-screen w-64 bg-brown-400 py-10 text-my-white shadow">
     <div class="mb-6 flex flex-col items-center justify-center gap-y-4 text-slate-800">
         <a class="min-w-20 block text-teal-600" href="{{ route('home') }}">
             <span class="sr-only">Home</span>
@@ -19,7 +19,7 @@
 
     <nav class="">
         <a class="mt-4 flex items-center py-2 px-6 text-my-white transition-all hover:translate-x-1 hover:bg-my-white hover:text-brown-400"
-           href="">
+           href="{{ route('discussion.index') }}">
             <svg class="icon icon-tabler icon-tabler-home" xmlns="http://www.w3.org/2000/svg" width="24"
                  height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
                  stroke-linecap="round" stroke-linejoin="round">

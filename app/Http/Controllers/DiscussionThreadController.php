@@ -59,6 +59,47 @@ class DiscussionThreadController extends Controller
         return view('discussion.index', ['discussions' => $discussions, 'trending' => $trending, 'mostLiked' => $mostLikedDiscussionsData]);
     }
 
+    public function search(Request $request)
+    {
+        $searchQuery = $request->input('search');
+
+        $forumCategory = null;
+        if (strpos($searchQuery, '#') === 0) {
+            // Remove the "#" symbol from the search query
+            $forumCategory = substr($searchQuery, 1);
+        }
+
+        $query = Discussion_Thread::query();
+
+        if ($forumCategory) {
+            // Search by forum category if the search query starts with "#"
+            $query->whereHas('forumCategory', function ($query) use ($forumCategory) {
+                $query->where('name', 'like', $forumCategory);
+            });
+        } else {
+            // Search by title or body if the search query doesn't start with "#"
+            $query->where(function ($query) use ($searchQuery) {
+                $query->where('title', 'like', "%$searchQuery%")
+                    ->orWhere('body', 'like', "%$searchQuery%");
+            });
+        }
+
+        $discussions = $query->paginate(10);
+
+        $trendingCategories = Discussion_Thread::select('forum_category_id', DB::raw('COUNT(*) as count'))
+            ->groupBy('forum_category_id')
+            ->orderByDesc('count')
+            ->limit(5)
+            ->get();
+
+        $trendingCategoryIds = $trendingCategories->pluck('forum_category_id')->toArray();
+
+        $trending = Forum_Category::whereIn('id', $trendingCategoryIds)
+            ->orderByRaw("FIELD(id, " . implode(',', $trendingCategoryIds) . ")")
+            ->get();
+
+        return view('discussion.index', ['discussions' => $discussions, 'trending' => $trending]);
+    }
 
     /**
      * Show the form for creating a new resource.

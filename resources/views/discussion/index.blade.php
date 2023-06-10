@@ -7,8 +7,32 @@
 @section('main')
     <div class="min-h-screen bg-orange">
         @include('discussion.sidebar')
+
         <div class="flex flex-col-reverse">
+
             <div class="mx-auto min-h-screen w-full bg-my-white px-6 py-4 shadow md:w-[800px]">
+                <div class="mb-4 w-full rounded-lg bg-slate-200 p-4 px-6">
+                    <form action="{{ route('discussion.search') }}" method="GET">
+                        @csrf
+                        <div class="flex space-x-4">
+                            <div class="flex w-full gap-x-1 overflow-hidden rounded-md">
+                                <button
+                                        class="overflow-hidden rounded-l-xl bg-orange px-5 py-4 text-lg font-semibold text-white transition-all hover:translate-x-1">
+                                    <svg class="icon icon-tabler icon-tabler-search" xmlns="http://www.w3.org/2000/svg"
+                                         width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                         stroke="currentColor" fill="none" stroke-linecap="round"
+                                         stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path>
+                                        <path d="M21 21l-6 -6"></path>
+                                    </svg>
+                                </button>
+                                <input class="w-full rounded-r-xl border outline-none focus:border-orange" name="search"
+                                       type="text" placeholder="Cari disuksi dari judul, isi, #hashtag..." />
+                            </div>
+                        </div>
+                    </form>
+                </div>
                 <div class="mb-10 flex gap-x-4 rounded-lg bg-slate-200 p-6">
                     <div>
                         <img class="h-10 w-10 rounded-full" src="{{ asset('img/no-profile.jpg') }}" alt="">
@@ -75,15 +99,15 @@
                                             <h3 class="mb-4 text-gray-600">@ {{ $discussion->user->username }}</h3>
                                             <a class="mb-2 text-2xl font-bold hover:text-slate-500"
                                                href="{{ route('discussion.show', $discussion->id) }}">{{ $discussion->title }}</a>
-                                            <p class="mb-2 line-clamp-6">{{ $discussion->body }}</p>
+                                            <p class="line-clamp-6 mb-2">{{ $discussion->body }}</p>
                                             @if ($discussion->thread_images->count() > 0)
                                                 <div class="swiper mySwiper mb-4 h-56 w-full">
                                                     <!-- Additional required wrapper -->
                                                     <div class="swiper-wrapper flex h-full rounded-lg">
                                                         <!-- Slides -->
                                                         @foreach ($discussion->thread_images as $image)
-                                                            <div class="swiper-slide h-full overflow-hidden rounded-lg"><img
-                                                                     class="w-full rounded-lg"
+                                                            <div class="swiper-slide h-full overflow-hidden rounded-lg">
+                                                                <img class="w-full rounded-lg"
                                                                      src="{{ asset('storage/' . $image->url) }}"
                                                                      alt="Review Image">
                                                             </div>
@@ -174,7 +198,7 @@
                                         <h3 class="mb-4 text-gray-600">@ {{ $discussion->user->username }}</h3>
                                         <a class="mb-2 text-2xl font-bold hover:text-slate-500"
                                            href="{{ route('discussion.show', $discussion->id) }}">{{ $discussion->title }}</a>
-                                        <p class="mb-2 line-clamp-6">{{ $discussion->body }}</p>
+                                        <p class="line-clamp-6 mb-2">{{ $discussion->body }}</p>
                                         @if ($discussion->thread_images->count() > 0)
                                             <div class="swiper mySwiper mb-4 h-56 w-full">
                                                 <!-- Additional required wrapper -->
@@ -265,7 +289,7 @@
             <ul
                 class="static right-0 top-0 w-full space-y-1 bg-brown-400 p-4 text-my-white md:fixed md:w-60 md:rounded-bl-xl">
                 <h1 class="text-center text-xl font-semibold">Trending</h1>
-                <div class="flex flex-row md:flex-col flex-wrap justify-center items-center">
+                <div class="flex flex-row flex-wrap items-center justify-center md:flex-col">
                     @foreach ($trending as $trend)
                         <li>
                             <a class="block rounded-lg px-4 py-2 text-center text-lg font-medium text-blue-400 hover:translate-x-1"
