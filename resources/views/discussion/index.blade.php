@@ -165,7 +165,7 @@
             @foreach ($trending as $trend)
                 <li>
                     <a class="block rounded-lg px-4 py-2 text-center text-lg font-medium text-blue-400 hover:translate-x-1"
-                       href="">
+                       href="{{ route('category.myIndex', $trend->id) }}">
                         <span>#</span> {{ $trend->name }}
                     </a>
                 </li>
@@ -220,10 +220,10 @@
 
             $(document).ready(function() {
                 $('.like-button').on('click', async function() {
-                    // Get the discussion ID
+
                     const discussionId = $(this).closest('.discussion').data('discussion-id');
 
-                    // Get the necessary elements based on the discussion ID
+
                     const likeButton = $(`#like-button-${discussionId}`);
                     const unlikeButton = $(`#unlike-button-${discussionId}`);
                     const likeForm = $(`#like-form-${discussionId}`);
@@ -233,16 +233,16 @@
                     try {
                         const response = await $.post(likeForm.attr('action'), likeForm.serialize());
 
-                        // Update UI for liking
+
                         likeButton.addClass('liked').addClass('hidden');
                         unlikeButton.removeClass('hidden');
                         const currentLikeCount = parseInt(likeCountElement.text());
                         likeCountElement.text(currentLikeCount + 1);
 
-                        // Set the like ID for unliking
+
                         unlikeForm.attr('action', '/like/delete/' + response.like_id);
 
-                        // Show the unlike form
+
                         unlikeForm.show();
                     } catch (error) {
                         console.error('An error occurred:', error);
@@ -250,17 +250,17 @@
                 });
 
                 $('.unlike-button').on('click', async function() {
-                    // Get the discussion ID
+
                     const discussionId = $(this).closest('.discussion').data('discussion-id');
 
-                    // Get the necessary elements based on the discussion ID
+
                     const likeButton = $(`#like-button-${discussionId}`);
                     const unlikeButton = $(`#unlike-button-${discussionId}`);
                     const likeForm = $(`#like-form-${discussionId}`);
                     const unlikeForm = $(`#unlike-form-${discussionId}`);
                     const likeCountElement = $(`#like-count-${discussionId}`);
 
-                    // Unlike the discussion thread
+
                     try {
                         const response = await $.ajax({
                             url: unlikeForm.attr('action'),
@@ -268,7 +268,7 @@
                             data: unlikeForm.serialize(),
                         });
 
-                        // Update UI for unliking
+
                         likeButton.removeClass('liked');
                         unlikeButton.addClass('hidden');
                         likeButton.removeClass('hidden');

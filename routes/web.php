@@ -14,6 +14,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\DiscussionThreadController;
+use App\Http\Controllers\ForumCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,6 +46,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('discussion', DiscussionThreadController::class);
     Route::resource('comment', CommentController::class);
     Route::resource('like', LikeController::class);
+    Route::resource('category', ForumCategoryController::class);
+    Route::get('trending/{categoryId}', [ForumCategoryController::class, 'index'])->name('category.myIndex');
     Route::post('/like/delete/{id}', [LikeController::class, 'destroy']);
 
     Route::middleware('IsAdmin')->prefix('admin')->group(function () {

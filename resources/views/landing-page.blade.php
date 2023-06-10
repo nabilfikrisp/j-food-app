@@ -43,7 +43,7 @@
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur architecto quam ipsum enim accusantium.
                     Iusto nihil illum quia perspiciatis omnis?</p>
                 <a class="flex w-fit items-center gap-x-2 divide-x-2 rounded-md bg-white px-2 py-1 text-center text-slate-700 hover:bg-my-white"
-                   href="">
+                   href="{{ route('discussion.index') }}">
                     <p class="text-sm">Community</p>
                     <svg class="icon icon-tabler icon-tabler-chevron-right" xmlns="http://www.w3.org/2000/svg"
                          width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -102,7 +102,7 @@
                         <a class="block rounded-lg bg-brown-100 p-4 text-my-white shadow-sm shadow-brown-200 transition-all hover:-translate-y-2"
                            href="{{ route('restaurant.show', $restaurant['id']) }}">
                             <img class="aspect-[15/16] w-full rounded-md object-cover"
-                                 src="{{ $restaurant['image'] == NULL ? asset('img/Frame70.png') : $restaurant['image'] }}"
+                                 src="{{ $restaurant['image'] == null ? asset('img/Frame70.png') : $restaurant['image'] }}"
                                  alt="{{ $restaurant['name'] }}" />
                             <div class="mt-2">
                                 <dl>

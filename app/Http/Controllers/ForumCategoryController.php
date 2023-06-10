@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Forum_Category;
+use App\Models\Discussion_Thread;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreForum_CategoryRequest;
 use App\Http\Requests\UpdateForum_CategoryRequest;
 
@@ -13,9 +15,25 @@ class ForumCategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($categoryId)
     {
-        //
+        $discussions = Discussion_Thread::where('forum_category_id', $categoryId)
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        $trendingCategories = Discussion_Thread::select('forum_category_id', DB::raw('COUNT(*) as count'))
+            ->groupBy('forum_category_id')
+            ->orderByDesc('count')
+            ->limit(5)
+            ->get();
+
+        $trendingCategoryIds = $trendingCategories->pluck('forum_category_id')->toArray();
+
+        $trending = Forum_Category::whereIn('id', $trendingCategoryIds)
+            ->orderByRaw("FIELD(id, " . implode(',', $trendingCategoryIds) . ")")
+            ->get();
+
+        return view('discussion.index', ['discussions' => $discussions, 'trending' => $trending]);
     }
 
     /**
@@ -47,7 +65,6 @@ class ForumCategoryController extends Controller
      */
     public function show(Forum_Category $forum_Category)
     {
-        //
     }
 
     /**
