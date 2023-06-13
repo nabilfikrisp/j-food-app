@@ -134,7 +134,7 @@
                                             <div class="flex justify-between">
                                                 <h2 class="font-semibold">{{ $discussion->user->first_name }}
                                                     {{ $discussion->user->last_name }}</h2>
-                                                <p>{{ $discussion->created_at->diffForHumans() }}</p>
+                                                <p class="text-sm text-slate-400">{{ $discussion->created_at->diffForHumans() }}</p>
                                             </div>
 
                                             <h3 class="mb-4 text-gray-600">@ {{ $discussion->user->username }}</h3>
@@ -240,7 +240,7 @@
                                         <div class="flex justify-between">
                                             <h2 class="font-semibold">{{ $discussion->user->first_name }}
                                                 {{ $discussion->user->last_name }}</h2>
-                                            <p>{{ $discussion->created_at->diffForHumans() }}</p>
+                                            <p class="text-sm text-slate-400">{{ $discussion->created_at->diffForHumans() }}</p>
                                         </div>
                                         <h3 class="mb-4 text-gray-600">@ {{ $discussion->user->username }}</h3>
                                         <a class="line-clamp-2 mb-2 text-2xl font-bold hover:text-slate-500"
